@@ -1,4 +1,4 @@
-import {product} from './product'
-import {post} from './post'
+import { postType } from '../postType'
+import { eventType } from '../eventType'
 
-export const schemaTypes = [product, post]
+export const schemaTypes = [postType, eventType]
