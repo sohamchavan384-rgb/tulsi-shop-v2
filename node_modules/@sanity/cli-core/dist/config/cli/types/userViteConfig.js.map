@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../../src/config/cli/types/userViteConfig.ts"],"sourcesContent":["import {type ConfigEnv, type InlineConfig} from 'vite'\n\n/**\n * @public\n */\nexport type UserViteConfig =\n  | ((config: InlineConfig, env: ConfigEnv) => InlineConfig | Promise<InlineConfig>)\n  | InlineConfig\n"],"names":[],"mappings":"AAEA;;CAEC,GACD,WAEgB"}

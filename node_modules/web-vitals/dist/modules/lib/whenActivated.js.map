@@ -1,0 +1,1 @@
+{"version":3,"file":"whenActivated.js","sourceRoot":"","sources":["../../../src/lib/whenActivated.ts"],"names":[],"mappings":"AAAA;;;;;;;;;;;;;;GAcG;AAEH,MAAM,CAAC,MAAM,aAAa,GAAG,CAAC,QAAoB,EAAE,EAAE;IACpD,IAAI,QAAQ,CAAC,YAAY,EAAE,CAAC;QAC1B,gBAAgB,CAAC,oBAAoB,EAAE,QAAQ,EAAE,IAAI,CAAC,CAAC;IACzD,CAAC;SAAM,CAAC;QACN,QAAQ,EAAE,CAAC;IACb,CAAC;AACH,CAAC,CAAC"}

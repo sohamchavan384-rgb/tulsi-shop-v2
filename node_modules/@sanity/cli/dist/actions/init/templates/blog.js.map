@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../../src/actions/init/templates/blog.ts"],"sourcesContent":["import {type ProjectTemplate} from '../types.js'\n\nconst blogTemplate: ProjectTemplate = {}\n\nexport default blogTemplate\n"],"names":["blogTemplate"],"mappings":"AAEA,MAAMA,eAAgC,CAAC;AAEvC,eAAeA,aAAY"}

@@ -1,0 +1,96 @@
+{
+  "name": "@module-federation/vite",
+  "version": "1.21.6",
+  "description": "Vite plugin for Module Federation",
+  "type": "module",
+  "main": "./lib/index.js",
+  "module": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./ssrEntryLoader": {
+      "types": "./lib/utils/ssrEntryLoader.d.ts",
+      "default": "./lib/utils/ssrEntryLoader.js"
+    },
+    "./injectExternalRuntimeCorePlugin": {
+      "types": "./lib/utils/injectExternalRuntimeCorePlugin.d.ts",
+      "default": "./lib/utils/injectExternalRuntimeCorePlugin.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  },
+  "files": [
+    "lib/**/*"
+  ],
+  "scripts": {
+    "prepare": "husky",
+    "fmt": "oxfmt src",
+    "fmt.check": "oxfmt --check src",
+    "dev": "tsdown --watch",
+    "build": "tsdown",
+    "clean": "pnpm -r exec rm -rf dist node_modules/__mf__virtual .vite node_modules/.vite",
+    "dev-rv": "pnpm clean && pnpm --filter 'examples-rust-vite*' run dev",
+    "preview-rv": "pnpm clean && pnpm --filter 'examples-rust-vite*' run preview",
+    "dev-vv": "pnpm clean && pnpm --filter 'examples-vite-vite*' run dev",
+    "preview-vv": "pnpm clean && pnpm run build:shared-lib && pnpm --filter 'examples-vite-vite*' --parallel run preview",
+    "preview-vv:ci": "pnpm run build:shared-lib && pnpm --filter 'examples-vite-vite*' --parallel run preview",
+    "preview-vv:external": "pnpm clean && pnpm run build:shared-lib && EXTERNAL_RUNTIME=1 pnpm --filter 'examples-vite-vite*' --parallel run preview",
+    "preview-vv:external:ci": "pnpm run build:shared-lib && EXTERNAL_RUNTIME=1 pnpm --filter 'examples-vite-vite*' --parallel run preview",
+    "e2e:external": "playwright test --config=playwright.external-runtime.config.ts",
+    "build:shared-lib": "pnpm --filter @vite-vite/shared-lib run build",
+    "typecheck": "tsc -p tsconfig.json",
+    "multi-example:ci": "pnpm --filter 'multi-example-*' --parallel run start",
+    "mixed-vv:1": "pnpm clean && pnpm --filter 'examples-vite-vite*' run mixed:1",
+    "mixed-vv:2": "pnpm clean && pnpm --filter 'examples-vite-vite*' run mixed:2",
+    "multi-example": "pnpm clean && pnpm --filter 'multi-example-*' --parallel run start",
+    "test": "vitest run --dir src",
+    "test:integration": "vitest run integration",
+    "e2e": "playwright test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/module-federation/vite.git"
+  },
+  "keywords": [
+    "vite",
+    "vite-plugin",
+    "module federation",
+    "microfrontend"
+  ],
+  "author": {
+    "name": "Giorgio Boa",
+    "email": "giorgiob.boa@gmail.com",
+    "url": "https://github.com/gioboa"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/module-federation/vite/issues"
+  },
+  "homepage": "https://github.com/module-federation/vite#readme",
+  "packageManager": "pnpm@10.28.2",
+  "peerDependencies": {
+    "vite": "^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0"
+  },
+  "dependencies": {
+    "@module-federation/dts-plugin": "2.9.0",
+    "@module-federation/runtime": "2.9.0",
+    "@module-federation/sdk": "2.9.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.62.0",
+    "@types/node": "26.1.2",
+    "husky": "9.1.7",
+    "mock-shared-dep": "workspace:*",
+    "oxfmt": "0.61.0",
+    "rollup": "4.62.3",
+    "tsdown": "0.22.14",
+    "typescript": "7.0.2",
+    "vite": "8.2.0",
+    "vitest": "4.1.11"
+  }
+}

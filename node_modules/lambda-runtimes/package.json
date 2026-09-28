@@ -1,0 +1,28 @@
+{
+  "name": "lambda-runtimes",
+  "description": "Canonical list of AWS Lambda runtime identifiers and corresponding CPU architectures",
+  "version": "3.0.0",
+  "type": "module",
+  "module": "./esm/index.js",
+  "main": "./cjs/index.js",
+  "exports": {
+    "import": "./esm/index.js",
+    "default": "./cjs/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/architect/lambda-runtimes.git"
+  },
+  "license": "Apache-2.0",
+  "scripts": {
+    "test": "node --test 'test/unit/**/*-test.js'",
+    "rc": "npm version prerelease --preid RC"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "files": [
+    "cjs/*",
+    "esm/*.js"
+  ]
+}

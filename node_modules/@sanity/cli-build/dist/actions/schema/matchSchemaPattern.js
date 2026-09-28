@@ -1,0 +1,21 @@
+import { isAbsolute, relative } from 'node:path';
+import picomatch from 'picomatch';
+/**
+ * Creates a pattern matcher function for schema watch patterns.
+ * Normalizes file paths to forward slashes and makes them relative before matching.
+ *
+ * @param patterns - Array of glob patterns to match against
+ * @returns Function that takes a file path and workDir, returns true if file matches any pattern
+ * @internal
+ */ export function createSchemaPatternMatcher(patterns) {
+    const matcher = picomatch(patterns);
+    return {
+        isMatch: (filePath, workDir)=>{
+            const relativePath = isAbsolute(filePath) ? relative(workDir, filePath) : filePath;
+            const normalizedPath = relativePath.replaceAll('\\', '/');
+            return matcher(normalizedPath);
+        }
+    };
+}
+
+//# sourceMappingURL=matchSchemaPattern.js.map

@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/actions/build/constants.ts"],"sourcesContent":["/** Subdirectory under the build output where vendored ESM chunks are emitted. */\nexport const VENDOR_DIR = 'vendor'\n"],"names":["VENDOR_DIR"],"mappings":"AAAA,+EAA+E,GAC/E,OAAO,MAAMA,aAAa,SAAQ"}

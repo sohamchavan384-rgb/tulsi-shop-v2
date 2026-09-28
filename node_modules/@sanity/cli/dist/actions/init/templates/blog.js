@@ -1,0 +1,4 @@
+const blogTemplate = {};
+export default blogTemplate;
+
+//# sourceMappingURL=blog.js.map

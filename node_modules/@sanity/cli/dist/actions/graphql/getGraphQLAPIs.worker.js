@@ -1,0 +1,95 @@
+import { isMainThread, parentPort, workerData } from 'node:worker_threads';
+import { doImport, isStudioConfig } from '@sanity/cli-core';
+import { resolveGraphQLApiMetadata } from './resolveGraphQLApisFromWorkspaces.js';
+const { cliConfig, configPath } = workerData;
+async function main() {
+    if (isMainThread || !parentPort) {
+        throw new Error('This module must be run as a worker thread');
+    }
+    // Import the raw config through Vite (via studioWorkerTask) — handles TS paths, browser globals.
+    // We skip resolveConfig() entirely to avoid schema compilation — we only need workspace metadata.
+    let config = await doImport(configPath);
+    // Handle both direct config exports and default exports (same logic as getStudioWorkspaces)
+    if (!isStudioConfig(config)) {
+        if (typeof config === 'object' && config !== null && 'default' in config && isStudioConfig(config.default)) {
+            config = config.default;
+        } else {
+            throw new TypeError(`Invalid studio config format in "${configPath}"`);
+        }
+    }
+    const configs = Array.isArray(config) ? config : [
+        config
+    ];
+    const workspaces = configs.map((ws)=>toWorkspaceMetadata(ws));
+    const apis = resolveGraphQLApiMetadata({
+        cliConfig,
+        workspaces
+    });
+    parentPort.postMessage(apis);
+}
+function toWorkspaceMetadata(config) {
+    if (typeof config !== 'object' || config === null) {
+        throw new Error('Invalid workspace config: expected an object');
+    }
+    if (!('projectId' in config) || !config.projectId || typeof config.projectId !== 'string') {
+        throw new Error('Invalid workspace config: missing or invalid projectId');
+    }
+    if (!('dataset' in config) || !config.dataset || typeof config.dataset !== 'string') {
+        throw new Error('Invalid workspace config: missing or invalid dataset');
+    }
+    // Default to 'default' when no name is specified — this matches the convention used by
+    // resolveConfig() in the full-compile path (extractGraphQLAPIs). Both paths must agree on
+    // this default so that workspace lookup in resolveGraphQLApiMetadata/resolveGraphQLApis
+    // produces the same match. If Sanity's resolveConfig() ever changes this convention,
+    // this default must be updated to match.
+    const name = 'name' in config && typeof config.name === 'string' ? config.name : 'default';
+    const sources = extractSourceMetadata(config, {
+        dataset: config.dataset,
+        name,
+        projectId: config.projectId
+    });
+    return {
+        dataset: config.dataset,
+        name,
+        projectId: config.projectId,
+        sources
+    };
+}
+/**
+ * Extract source metadata from the raw workspace config.
+ *
+ * After `resolveConfig()`, each workspace has `unstable_sources` with full schema objects.
+ * The raw config from `defineConfig()` may also have `unstable_sources` if the user explicitly
+ * configured multiple sources. We extract only the metadata (name/dataset/projectId) we need.
+ *
+ * If no `unstable_sources` are present, we create a single default source from the workspace
+ * metadata — matching what `resolveConfig()` would produce for a single-source workspace.
+ */ function extractSourceMetadata(config, workspaceDefaults) {
+    if (!('unstable_sources' in config) || !Array.isArray(config.unstable_sources)) {
+        return [
+            workspaceDefaults
+        ];
+    }
+    const sources = [];
+    for (const source of config.unstable_sources){
+        if (typeof source !== 'object' || source === null) continue;
+        const sourceName = 'name' in source && typeof source.name === 'string' ? source.name : 'default';
+        // Sources can inherit projectId/dataset from the parent workspace (e.g. when
+        // only `name` and `schema` are specified in `unstable_sources`). Fall back to
+        // the workspace-level values when the source doesn't define its own.
+        const projectId = 'projectId' in source && typeof source.projectId === 'string' && source.projectId ? source.projectId : workspaceDefaults.projectId;
+        const dataset = 'dataset' in source && typeof source.dataset === 'string' && source.dataset ? source.dataset : workspaceDefaults.dataset;
+        sources.push({
+            dataset,
+            name: sourceName,
+            projectId
+        });
+    }
+    // Fall back to workspace-level metadata if no valid sources were found
+    return sources.length > 0 ? sources : [
+        workspaceDefaults
+    ];
+}
+await main();
+
+//# sourceMappingURL=getGraphQLAPIs.worker.js.map

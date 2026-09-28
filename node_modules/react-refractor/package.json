@@ -1,0 +1,85 @@
+{
+  "name": "react-refractor",
+  "version": "4.0.0",
+  "description": "Super-thin React wrapper for refractor (Syntax highlighting using VDOM)",
+  "type": "module",
+  "exports": {
+    ".": {
+      "source": "./src/index.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "browserslist": [
+    "fully supports es6-module",
+    "node 20"
+  ],
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "npm run clean && pkg-utils build --strict && npm run build:demo",
+    "build:demo": "vite build",
+    "clean": "rimraf dist",
+    "coverage": "vitest --coverage",
+    "dev": "vite demo",
+    "lint": "eslint .",
+    "prepublishOnly": "npm run build && npm test",
+    "posttest": "npm run lint",
+    "test": "vitest && pkg-utils --strict"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rexxars/react-refractor.git"
+  },
+  "keywords": [
+    "react",
+    "highlight",
+    "syntax",
+    "refractor",
+    "vdom"
+  ],
+  "author": "Espen Hovlandsdal <espen@hovlandsdal.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rexxars/react-refractor/issues"
+  },
+  "homepage": "https://github.com/rexxars/react-refractor#readme",
+  "dependencies": {
+    "refractor": "^5.0.0",
+    "unist-util-filter": "^5.0.1",
+    "unist-util-visit-parents": "^6.0.1"
+  },
+  "devDependencies": {
+    "@sanity/pkg-utils": "^7.9.9",
+    "@sanity/semantic-release-preset": "^5.0.0",
+    "@types/hast": "^3.0.4",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@typescript-eslint/eslint-plugin": "^6.7.2",
+    "@typescript-eslint/parser": "^6.7.2",
+    "@vitejs/plugin-react": "^4.7.0",
+    "eslint": "^8.49.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-config-sanity": "^6.0.0",
+    "prettier": "^3.6.2",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "rimraf": "^6.0.1",
+    "semantic-release": "^24.2.7",
+    "typescript": "5.8.3",
+    "vite": "^7.0.5",
+    "vitest": "^3.2.4"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

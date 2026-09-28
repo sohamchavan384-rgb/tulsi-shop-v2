@@ -1,0 +1,60 @@
+{
+  "name": "oneline",
+  "version": "2.0.0",
+  "description": "Write nice template literals with newlines, but format as a single-line string",
+  "sideEffects": false,
+  "type": "module",
+  "types": "./oneline.d.ts",
+  "module": "./oneline.js",
+  "main": "./oneline.cjs",
+  "exports": {
+    ".": {
+      "import": "./oneline.js",
+      "require": "./oneline.cjs",
+      "default": "./oneline.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "test": "node oneline.test.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/rexxars/oneline.git"
+  },
+  "files": [
+    "oneline.cjs",
+    "oneline.d.cts",
+    "oneline.d.ts",
+    "oneline.js",
+    "test.js"
+  ],
+  "keywords": [
+    "template-literal",
+    "template-string",
+    "tagged",
+    "string",
+    "multiline"
+  ],
+  "author": "Espen Hovlandsdal <espen@hovlandsdal.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rexxars/oneline/issues"
+  },
+  "homepage": "https://github.com/rexxars/oneline#readme",
+  "devDependencies": {
+    "@sanity/semantic-release-preset": "^5.0.0",
+    "@types/node": "^18.19.80",
+    "prettier": "^3.5.3",
+    "semantic-release": "^24.0.0"
+  },
+  "prettier": {
+    "bracketSpacing": false,
+    "printWidth": 100,
+    "semi": false,
+    "singleQuote": true
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "name": "@algorithm.ts/lcs",
+  "version": "4.0.6",
+  "description": "Find the longest common subsequence.",
+  "author": {
+    "name": "guanghechen",
+    "url": "https://github.com/guanghechen/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/guanghechen/algorithm.ts/tree/@algorithm.ts/lcs@4.0.5",
+    "directory": "packages/lcs"
+  },
+  "homepage": "https://github.com/guanghechen/algorithm.ts/tree/@algorithm.ts/lcs@4.0.5/packages/lcs#readme",
+  "keywords": [
+    "algorithm",
+    "lcs",
+    "longest common subsequence"
+  ],
+  "type": "module",
+  "exports": {
+    "types": "./lib/types/index.d.ts",
+    "import": "./lib/esm/index.mjs",
+    "require": "./lib/cjs/index.cjs"
+  },
+  "source": "./src/index.ts",
+  "types": "./lib/types/index.d.ts",
+  "main": "./lib/cjs/index.cjs",
+  "module": "./lib/esm/index.mjs",
+  "license": "MIT",
+  "files": [
+    "lib/",
+    "!lib/**/*.map",
+    "package.json",
+    "CHANGELOG.md",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "clean": "rimraf lib",
+    "build": "rollup -c ../../rollup.config.mjs",
+    "test": "vitest run --config ../../vitest.config.ts",
+    "test:coverage": "vitest run --config ../../vitest.config.ts --coverage",
+    "test:update": "vitest run --config ../../vitest.config.ts -u"
+  }
+}

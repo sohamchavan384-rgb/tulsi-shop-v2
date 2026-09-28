@@ -1,0 +1,87 @@
+import { subdebug } from '@sanity/cli-core';
+import { listOrganizations } from '../../../services/organizations.js';
+import { InitError } from '../initError.js';
+import { getOrCreateDataset } from './getOrCreateDataset.js';
+import { getOrCreateProject } from './getOrCreateProject.js';
+import { promptForAppTemplateSetup } from './promptForAppTemplateSetup.js';
+import { promptUserForOrganization } from './promptUserForOrganization.js';
+const debug = subdebug('init');
+export async function getProjectDetails({ coupon, dataset, datasetDefault, isAppTemplate, newProject, organization, output, planId, project, showDefaultConfigPrompt, trace, unattended, user, visibility }) {
+    if (isAppTemplate) {
+        const hasProjectFlag = Boolean(project || newProject);
+        let appOrganizationId = organization;
+        if (!appOrganizationId && !hasProjectFlag) {
+            let organizations;
+            try {
+                organizations = await listOrganizations();
+            } catch (err) {
+                const message = err instanceof Error ? err.message : String(err);
+                throw new InitError(`Failed to communicate with the Sanity API:\n${message}`, 1);
+            }
+            appOrganizationId = await promptUserForOrganization({
+                isAppTemplate: true,
+                organizations,
+                user
+            });
+        }
+        const { datasetName: appDatasetName, displayName: appDisplayName, organizationId: resolvedOrganizationId, projectId: appProjectId } = await promptForAppTemplateSetup({
+            coupon,
+            dataset,
+            datasetDefault,
+            newProject,
+            organization,
+            organizationId: appOrganizationId,
+            output,
+            planId,
+            project,
+            trace,
+            unattended,
+            user,
+            visibility
+        });
+        return {
+            datasetName: appDatasetName,
+            displayName: appDisplayName,
+            isFirstProject: false,
+            organizationId: resolvedOrganizationId ?? appOrganizationId,
+            projectId: appProjectId
+        };
+    }
+    debug('Prompting user to select or create a project');
+    const projectResult = await getOrCreateProject({
+        coupon,
+        newProject,
+        organization,
+        planId,
+        project,
+        unattended,
+        user
+    });
+    debug(`Project with name ${projectResult.displayName} selected`);
+    debug('Prompting user to select or create a dataset');
+    const datasetResult = await getOrCreateDataset({
+        dataset,
+        defaultConfig: datasetDefault || undefined,
+        displayName: projectResult.displayName,
+        output,
+        projectId: projectResult.projectId,
+        showDefaultConfigPrompt,
+        unattended,
+        visibility
+    });
+    debug(`Dataset with name ${datasetResult.datasetName} selected`);
+    trace.log({
+        datasetName: datasetResult.datasetName,
+        selectedOption: datasetResult.userAction,
+        step: 'createOrSelectDataset',
+        visibility
+    });
+    return {
+        datasetName: datasetResult.datasetName,
+        displayName: projectResult.displayName,
+        isFirstProject: projectResult.isFirstProject,
+        projectId: projectResult.projectId
+    };
+}
+
+//# sourceMappingURL=getProjectDetails.js.map

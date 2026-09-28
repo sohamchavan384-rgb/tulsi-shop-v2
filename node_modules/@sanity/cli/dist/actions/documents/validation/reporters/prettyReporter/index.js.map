@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../../../../src/actions/documents/validation/reporters/prettyReporter/index.ts"],"sourcesContent":["export {pretty} from './prettyReporter.js'\n"],"names":["pretty"],"mappings":"AAAA,SAAQA,MAAM,QAAO,sBAAqB"}

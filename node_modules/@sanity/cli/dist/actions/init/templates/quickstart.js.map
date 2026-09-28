@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../../src/actions/init/templates/quickstart.ts"],"sourcesContent":["import {type ProjectTemplate} from '../types.js'\n\nconst quickStartTemplate: ProjectTemplate = {}\n\nexport default quickStartTemplate\n"],"names":["quickStartTemplate"],"mappings":"AAEA,MAAMA,qBAAsC,CAAC;AAE7C,eAAeA,mBAAkB"}

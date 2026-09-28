@@ -1,0 +1,4 @@
+const cleanTemplate = {};
+export default cleanTemplate;
+
+//# sourceMappingURL=clean.js.map

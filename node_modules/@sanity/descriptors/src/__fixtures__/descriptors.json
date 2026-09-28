@@ -1,0 +1,86 @@
+{
+  "simple-invalid": {
+    "$invalid": true,
+    "id": "abc",
+    "type": "example",
+    "name": "Bob"
+  },
+  "simple": {
+    "id": "uEiBOxhytlGdc2D5-Vjiz-tWBci0izK48bc_nQ5o54buSdQ",
+    "type": "example",
+    "name": "Bob"
+  },
+  "simple2": {
+    "id": "uEiBvg0XlscRCWV9BTQCdPriWz5oalJ7doZVbFgN7rDDbrg",
+    "type": "example",
+    "name": "Alice"
+  },
+  "nested": {
+    "id": "uEiAAhOWkGh57TjPlDxOR1SVGIPzZRlvxygkXWd2_L08aNQ",
+    "type": "example",
+    "keys": [
+      "uEiBOxhytlGdc2D5-Vjiz-tWBci0izK48bc_nQ5o54buSdQ",
+      "uEiBvg0XlscRCWV9BTQCdPriWz5oalJ7doZVbFgN7rDDbrg"
+    ]
+  },
+  "nested-empty": {
+    "id": "uEiC_KLIIekmLc6EWnCIBivbHnlDW4CjD1hgWikiSFBmzzQ",
+    "type": "example",
+    "keys": []
+  },
+  "nested-wrong-type": {
+    "id": "uEiAp0UaupzPmCkFAHk7QpX1uH_a4V580Usast-6J97Tlng",
+    "type": "example",
+    "keys": "world"
+  },
+  "nested-wrong-key-entry": {
+    "id": "uEiBw9GKmzQhfq70LAZBLiPFuFipOUyFLJTEb4uDTCy4JUw",
+    "type": "example",
+    "keys": [
+      "uEiBOxhytlGdc2D5-Vjiz-tWBci0izK48bc_nQ5o54buSdQ",
+      true,
+      null,
+      {
+        "foo": "bar"
+      }
+    ]
+  },
+  "nested-of-nested": {
+    "id": "uEiCK_K8CSkS2pLr0Ole_ldCjYzYELK0_WcEezIj7iWJ_pQ",
+    "type": "example",
+    "keys": ["uEiAAhOWkGh57TjPlDxOR1SVGIPzZRlvxygkXWd2_L08aNQ"]
+  },
+  "nested-of-nested-with-sibling": {
+    "id": "uEiBD_xC9Wh2KQmiKZQQqRgi96w3qBNN-lomXULYJY8S8bQ",
+    "type": "example",
+    "keys": [
+      "uEiAAhOWkGh57TjPlDxOR1SVGIPzZRlvxygkXWd2_L08aNQ",
+      "uEiBOxhytlGdc2D5-Vjiz-tWBci0izK48bc_nQ5o54buSdQ"
+    ]
+  },
+  "simple-boolean": {
+    "id": "uEiCZE0ZbEAUQH6TcaN1gDLDyEFn__-cFfNCb55h0UFSTMw",
+    "type": "example",
+    "value1": true,
+    "value2": false
+  },
+  "simple-null": {
+    "id": "uEiCxj2p3BmL1JjeOdluxjSiQiX4yabhtGR3pdhxAw-bTKg",
+    "type": "example",
+    "value": null
+  },
+  "simple-array": {
+    "id": "uEiASUyyZ0HZWo1GFHRoqtpsAvkajAIgHXWyLssmYnD5h2Q",
+    "type": "example",
+    "value": ["hello"]
+  },
+  "simple-array-of-object": {
+    "id": "uEiD3zHnGx9Ltx60kzBiC-xgJANvoQau-EiRrTK_ndk8-jA",
+    "type": "example",
+    "value": [
+      {
+        "foo": "bar"
+      }
+    ]
+  }
+}

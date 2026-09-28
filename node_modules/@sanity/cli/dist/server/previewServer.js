@@ -1,0 +1,93 @@
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
+import { styleText } from 'node:util';
+import { extendViteConfigWithUserConfig } from '@sanity/cli-build/_internal/build';
+import { getLocalPackageVersion } from '@sanity/cli-core';
+import { preview } from 'vite';
+import { serverDebug } from './serverDebug.js';
+import { sanityBasePathRedirectPlugin } from './vite/plugin-sanity-basepath-redirect.js';
+const debug = serverDebug.extend('preview');
+/**
+ * Starts a Vite preview server for the given build output directory
+ *
+ * @param options - Preview server options
+ * @returns A promise that resolves to the started preview server
+ * @internal
+ */ export async function startPreviewServer(options) {
+    const { httpHost, httpPort, isApp, root, vite: extendViteConfig, workDir } = options;
+    const startTime = Date.now();
+    const indexPath = path.join(root, 'index.html');
+    let basePath;
+    try {
+        const index = await readFile(indexPath, 'utf8');
+        basePath = tryResolveBasePathFromIndex(index);
+    } catch (err) {
+        if (err instanceof Error && 'code' in err && err.code === 'ENOENT') {
+            const error = new Error(`Could not find a production build in the '${root}' directory.`);
+            error.name = 'BUILD_NOT_FOUND';
+            throw error;
+        }
+        throw err;
+    }
+    const mode = 'production';
+    let previewConfig = {
+        base: basePath || '/',
+        // Needed for vite to not serve `root/dist`
+        build: {
+            outDir: root
+        },
+        configFile: false,
+        mode,
+        plugins: [
+            sanityBasePathRedirectPlugin(basePath)
+        ],
+        preview: {
+            host: httpHost,
+            port: httpPort,
+            strictPort: true
+        },
+        root: workDir
+    };
+    // Extend Vite configuration with user-provided config
+    if (extendViteConfig) {
+        previewConfig = await extendViteConfigWithUserConfig({
+            command: 'serve',
+            mode
+        }, previewConfig, extendViteConfig);
+    }
+    debug('Creating vite server');
+    const server = await preview(previewConfig);
+    const warn = server.config.logger.warn;
+    const info = server.config.logger.info;
+    const url = server.resolvedUrls.local[0];
+    if (basePath === undefined) {
+        warn('Could not determine base path from index.html, using "/" as default');
+    } else if (basePath && basePath !== '/') {
+        info(`Using resolved base path from static build: ${styleText('cyan', basePath)}`);
+    }
+    const startupDuration = Date.now() - startTime;
+    const viteVersion = await getLocalPackageVersion('vite', import.meta.url);
+    info(`Sanity ${isApp ? 'application' : 'Studio'} ` + `using ${styleText('cyan', `vite@${viteVersion}`)} ` + `ready in ${styleText('cyan', `${Math.ceil(startupDuration)}ms`)} ` + `and running at ${styleText('cyan', url)} (production preview mode)`);
+    return {
+        close: ()=>new Promise((resolve, reject)=>server.httpServer.close((err)=>err ? reject(err) : resolve())),
+        urls: server.resolvedUrls
+    };
+}
+function tryResolveBasePathFromIndex(index) {
+    // <script ... src="/some-base-path/static/sanity-a3cc3d86.js"></script>
+    const basePath = index.match(/<script[^>]+src="(.*?)\/static\/sanity-/)?.[1];
+    // We _expect_ to be able to find the base path. If we can't, we should warn.
+    // Note that we're checking for `undefined` here, since an empty string is a
+    // valid base path.
+    if (basePath === undefined) {
+        return undefined;
+    }
+    // In the case of an empty base path, we still want to return `/` to indicate
+    // that we _found_ the basepath - it just happens to be empty. Eg:
+    // <script ... src = "/static/sanity-a3cc3d86.js"></script>
+    // Which differs from not being able to find the script tag at all, in which
+    // case we'll want to show a warning to indicate that it is an abnormality.
+    return basePath === '' ? '/' : basePath;
+}
+
+//# sourceMappingURL=previewServer.js.map

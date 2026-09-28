@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/actions/organizations/types.ts"],"sourcesContent":["import {Separator} from '@sanity/cli-core/ux'\n\nexport type OrganizationChoices = Array<\n  Separator | {disabled?: boolean | string; name: string; value: string}\n>\n"],"names":[],"mappings":"AAEA,WAEC"}

@@ -1,0 +1,37 @@
+{
+  "name": "@architect/inventory",
+  "version": "6.1.0",
+  "description": "Architect project resource enumeration utility",
+  "main": "src/index.js",
+  "scripts": {
+    "lint": "eslint . --fix",
+    "test": "npm run lint && npm run test:integration && npm run test:coverage",
+    "test:integration": "node --test --test-reporter=spec test/integration/*-test.js",
+    "test:coverage": "node --test --test-reporter=lcov --test-reporter-destination=lcov.info --experimental-test-coverage --test-coverage-lines=100 --test-coverage-exclude='test/**/*' 'test/unit/**/*-test.js' && npx lcoview lcov.info -q -s . -d coverage",
+    "test:unit": "node --test --test-reporter=spec 'test/unit/**/*-test.js'",
+    "rc": "npm version prerelease --preid RC",
+    "vendor": "scripts/vendor"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/architect/inventory.git"
+  },
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@architect/asap": "~7.0.10",
+    "@architect/parser": "~8.0.1",
+    "@architect/utils": "~6.0.0",
+    "@aws-lite/client": "^0.23.2",
+    "@aws-lite/ssm": "^0.2.5"
+  },
+  "devDependencies": {
+    "@architect/eslint-config": "~3.0.0",
+    "dotenv": "~17.2.2",
+    "eslint": "~9.36.0",
+    "lcoview": "~1.1.1",
+    "mock-tmp": "~0.0.4"
+  }
+}

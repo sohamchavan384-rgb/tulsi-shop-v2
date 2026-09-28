@@ -1,0 +1,30 @@
+[
+  {
+    "id": "1",
+    "name": "Original Kanthi Tulsi Mala",
+    "price": 299,
+    "description": "Handcrafted pure natural Tulsi wood beads for daily wear.",
+    "imageUrl": "https://images.unsplash.com/photo-1611080626919-7cf5a9dbab5b?w=500&q=80"
+  },
+  {
+    "id": "2",
+    "name": "Double Layer Tulsi Neck Bead",
+    "price": 499,
+    "description": "Premium 2-round authentic Tulsi mala with silver-plated clasp.",
+    "imageUrl": "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=500&q=80"
+  },
+  {
+    "id": "3",
+    "name": "108 Beads Tulsi Japa Mala",
+    "price": 350,
+    "description": "Traditional 108-bead mala designed specifically for chanting and meditation.",
+    "imageUrl": "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=500&q=80"
+  },
+  {
+    "id": "4",
+    "name": "Radhe Engraved Tulsi Bracelet",
+    "price": 199,
+    "description": "Comfortable elastic wristband crafted from genuine Tulsi wood.",
+    "imageUrl": "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=500&q=80"
+  }
+]

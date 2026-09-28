@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../../src/actions/init/templates/clean.ts"],"sourcesContent":["import {type ProjectTemplate} from '../types.js'\n\nconst cleanTemplate: ProjectTemplate = {}\n\nexport default cleanTemplate\n"],"names":["cleanTemplate"],"mappings":"AAEA,MAAMA,gBAAiC,CAAC;AAExC,eAAeA,cAAa"}

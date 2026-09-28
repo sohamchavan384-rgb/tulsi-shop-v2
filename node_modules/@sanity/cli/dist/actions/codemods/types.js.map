@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/actions/codemods/types.ts"],"sourcesContent":["export interface CodeMod {\n  description: string\n  // Must match filename in `cli/codemods/`\n  filename: string\n  purpose: string\n\n  verify?: (context: {workDir: string}) => Promise<void>\n}\n"],"names":[],"mappings":"AAAA,WAOC"}

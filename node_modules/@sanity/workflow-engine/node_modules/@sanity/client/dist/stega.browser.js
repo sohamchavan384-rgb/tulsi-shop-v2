@@ -1,0 +1,24 @@
+import { createClient as createClient$1, requester as requester$1, ObservableSanityClient, SanityClient } from "@sanity/client";
+export * from "@sanity/client";
+import { encodeIntoResult, stegaEncodeSourceMap } from "./_chunks-es/stegaEncodeSourceMap.js";
+import { stegaClean, vercelStegaCleanAll } from "./_chunks-es/stegaClean.js";
+function stegaBrand(result) {
+  return result;
+}
+class SanityStegaClient extends SanityClient {
+}
+class ObservableSanityStegaClient extends ObservableSanityClient {
+}
+const requester = requester$1, createClient = createClient$1;
+export {
+  ObservableSanityStegaClient,
+  SanityStegaClient,
+  createClient,
+  encodeIntoResult,
+  requester,
+  stegaBrand,
+  stegaClean,
+  stegaEncodeSourceMap,
+  vercelStegaCleanAll
+};
+//# sourceMappingURL=stega.browser.js.map

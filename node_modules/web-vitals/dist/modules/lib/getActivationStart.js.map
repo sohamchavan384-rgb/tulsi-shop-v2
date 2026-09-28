@@ -1,0 +1,1 @@
+{"version":3,"file":"getActivationStart.js","sourceRoot":"","sources":["../../../src/lib/getActivationStart.ts"],"names":[],"mappings":"AAAA;;;;;;;;;;;;;;GAcG;AAEH,OAAO,EAAC,kBAAkB,EAAC,MAAM,yBAAyB,CAAC;AAE3D,MAAM,CAAC,MAAM,kBAAkB,GAAG,GAAW,EAAE;IAC7C,OAAO,kBAAkB,EAAE,EAAE,eAAe,IAAI,CAAC,CAAC;AACpD,CAAC,CAAC"}

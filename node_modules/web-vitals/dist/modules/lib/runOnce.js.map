@@ -1,0 +1,1 @@
+{"version":3,"file":"runOnce.js","sourceRoot":"","sources":["../../../src/lib/runOnce.ts"],"names":[],"mappings":"AAAA;;;;;;;;;;;;;;GAcG;AAEH,MAAM,CAAC,MAAM,OAAO,GAAG,CAAC,EAAc,EAAE,EAAE;IACxC,IAAI,MAAM,GAAG,KAAK,CAAC;IACnB,OAAO,GAAG,EAAE;QACV,IAAI,CAAC,MAAM,EAAE,CAAC;YACZ,EAAE,EAAE,CAAC;YACL,MAAM,GAAG,IAAI,CAAC;QAChB,CAAC;IACH,CAAC,CAAC;AACJ,CAAC,CAAC"}

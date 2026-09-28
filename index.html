@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sacred Radha Kund Tulsi - Authentic Hand-Carved Malas</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            emerald: {
+              900: '#064e3b',
+              950: '#022c22',
+            },
+            amber: {
+              100: '#fef3c7',
+              200: '#fde68a',
+              300: '#fcd34d',
+              400: '#fbbf24',
+              500: '#f59e0b',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .gold-gradient {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    }
+    .subtle-glow {
+      box-shadow: 0 10px 30px -10px rgba(6, 78, 59, 0.4);
+    }
+  </style>
+</head>
+<body class="bg-stone-950 text-stone-100 font-sans selection:bg-amber-500 selection:text-stone-950">
+
+  <!-- Sticky Announcement Bar -->
+  <div class="bg-emerald-950 text-amber-300/90 text-xs text-center py-2 px-4 border-b border-emerald-900/50 tracking-widest uppercase">
+    ✨ Hand-Carved at Sacred Radha Kund • Direct WhatsApp Ordering Across India ✨
+  </div>
+
+  <!-- Header -->
+  <header class="p-4 bg-stone-950/90 backdrop-blur-md border-b border-emerald-900/40 sticky top-0 z-40 flex justify-between items-center px-4 md:px-12">
+    <!-- Left Menu Toggle Button -->
+    <div class="flex items-center gap-3">
+      <button onclick="toggleSidebar()" class="text-amber-200 hover:text-amber-400 p-2 focus:outline-none" aria-label="Open Navigation Menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+      <div class="flex items-center gap-2">
+        <span class="text-xl">🌿</span>
+        <h1 class="text-xl md:text-2xl font-serif font-bold text-amber-200 tracking-wide">Sacred Radha Kund Tulsi</h1>
+      </div>
+    </div>
+
+    <!-- Right Header Actions -->
+    <div class="flex items-center gap-4">
+      <button onclick="toggleCart()" class="relative text-amber-200 hover:text-amber-400 p-2 focus:outline-none">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+        </svg>
+        <span id="cart-count" class="absolute -top-1 -right-1 bg-amber-500 text-stone-950 font-bold text-xs w-5 h-5 rounded-full flex items-center justify-center">0</span>
+      </button>
+      <a href="#buy" class="hidden sm:inline-block gold-gradient hover:opacity-90 text-stone-950 font-semibold text-xs uppercase tracking-wider px-4 py-2 rounded-full transition shadow-md">
+        Shop Catalog
+      </a>
+    </div>
+  </header>
+
+  <!-- Left Sliding Drawer Menu -->
+  <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-stone-950/80 backdrop-blur-sm z-50 hidden transition-opacity"></div>
+  <aside id="sidebar" class="fixed top-0 left-0 w-80 md:w-96 h-full bg-stone-900 border-r border-emerald-900/50 z-50 transform -translate-x-full transition-transform duration-300 ease-in-out overflow-y-auto p-6 flex flex-col justify-between">
+    <div>
+      <div class="flex justify-between items-center pb-4 border-b border-emerald-900/40">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">🌿</span>
+          <h2 class="font-serif font-bold text-lg text-amber-200">Sacred Navigation</h2>
+        </div>
+        <button onclick="toggleSidebar()" class="text-emerald-100/60 hover:text-amber-300 text-2xl">&times;</button>
+      </div>
+
+      <nav class="mt-6 space-y-4">
+        <a href="#about" onclick="toggleSidebar()" class="block text-amber-100 hover:text-amber-400 text-sm font-medium transition">📜 Sacred Scripture Verses (Puranas)</a>
+        <a href="#benefits" onclick="toggleSidebar()" class="block text-amber-100 hover:text-amber-400 text-sm font-medium transition">✨ Material & Spiritual Benefits</a>
+        <a href="#buy" onclick="toggleSidebar()" class="block text-amber-100 hover:text-amber-400 text-sm font-medium transition">🛍️ Full Catalog</a>
+        <a href="#wishlist" onclick="toggleSidebar()" class="block text-amber-100 hover:text-amber-400 text-sm font-medium transition flex justify-between items-center">
+          <span>❤️ Saved Wishlist</span>
+          <span id="wishlist-count" class="bg-emerald-900 text-amber-300 text-xs font-bold px-2 py-0.5 rounded-full">0</span>
+        </a>
+        <a href="#faq" onclick="toggleSidebar()" class="block text-amber-100 hover:text-amber-400 text-sm font-medium transition">❓ Q&A (Bathing & Care)</a>
+        <a href="#reviews" onclick="toggleSidebar()" class="block text-amber-100 hover:text-amber-400 text-sm font-medium transition">⭐ Customer Reviews</a>
+        <a href="#contact" onclick="toggleSidebar()" class="block text-amber-100 hover:text-amber-400 text-sm font-medium transition">📞 Contact Us</a>
+      </nav>
+
+      <div class="mt-8 p-4 bg-emerald-950/60 border border-emerald-800/40 rounded-xl text-xs text-emerald-100/70 space-y-2">
+        <div class="font-serif font-bold text-amber-300 text-sm">Sacred Origin: Radha Kund</div>
+        <p class="leading-relaxed">Crafted by Vaisnava artisans at the holy banks of Radha Kund in Vraja Dham.</p>
+      </div>
+    </div>
+
+    <div class="pt-6 border-t border-emerald-900/40 text-xs text-emerald-100/40 text-center">
+      <p>Direct Orders via WhatsApp</p>
+    </div>
+  </aside>
+
+  <!-- Shopping Cart Drawer -->
+  <div id="cart-overlay" onclick="toggleCart()" class="fixed inset-0 bg-stone-950/80 backdrop-blur-sm z-50 hidden transition-opacity"></div>
+  <aside id="cart-drawer" class="fixed top-0 right-0 w-80 md:w-96 h-full bg-stone-900 border-l border-emerald-900/50 z-50 transform translate-x-full transition-transform duration-300 ease-in-out overflow-y-auto p-6 flex flex-col justify-between">
+    <div>
+      <div class="flex justify-between items-center pb-4 border-b border-emerald-900/40">
+        <h2 class="font-serif font-bold text-lg text-amber-200">Your Cart</h2>
+        <button onclick="toggleCart()" class="text-emerald-100/60 hover:text-amber-300 text-2xl">&times;</button>
+      </div>
+      <div id="cart-items" class="mt-6 space-y-4 text-sm text-emerald-100/70">
+        <p id="empty-cart-msg" class="text-center italic">Your cart is currently empty.</p>
+      </div>
+    </div>
+    <div class="border-t border-emerald-900/40 pt-4">
+      <div class="flex justify-between font-serif font-bold text-amber-200 text-base mb-4">
+        <span>Total:</span>
+        <span id="cart-total">₹0</span>
+      </div>
+      <a href="https://wa.me/919876543210?text=Hello!%20I%20want%20to%20place%20an%20order%20for%20my%20selected%20Tulsi%20items." target="_blank" class="block text-center gold-gradient text-stone-950 font-bold text-xs uppercase tracking-wider py-3 rounded-xl transition">
+        Checkout on WhatsApp
+      </a>
+    </div>
+  </aside>
+
+  <!-- Hero Section -->
+  <section class="relative py-20 px-4 text-center max-w-4xl mx-auto">
+    <div class="inline-flex items-center gap-2 bg-emerald-950 border border-emerald-800/60 text-amber-300 text-xs font-medium px-4 py-1.5 rounded-full mb-6 tracking-wide">
+      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Hand-Carved at Sacred Radha Kund
+    </div>
+    <h2 class="text-4xl md:text-6xl font-serif font-bold text-amber-100 mb-6 leading-tight">
+      Blessed Radha Kund Tulsi <br/><span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-500">Kanthi Malas, Bracelets & Jewelry</span>
+    </h2>
+    <p class="text-lg text-emerald-100/70 max-w-2xl mx-auto mb-10 leading-relaxed font-light">
+      Explore our authentic collection of hand-carved Tulsi wood items with accurate images directly from our Radha Kund workshop.
+    </p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+      <a href="#buy" class="w-full sm:w-auto gold-gradient text-stone-950 font-bold text-sm uppercase tracking-wider px-8 py-3.5 rounded-full shadow-lg hover:shadow-amber-500/10 transition">
+        Browse Collection
+      </a>
+      <a href="#about" class="w-full sm:w-auto bg-emerald-950/80 border border-emerald-900 hover:border-emerald-800 text-emerald-200/80 font-medium text-sm px-8 py-3.5 rounded-full transition">
+        Read Scripture Benefits
+      </a>
+    </div>
+  </section>
+
+  <!-- Detailed About & Scriptural Verses -->
+  <section id="about" class="bg-emerald-950/40 border-y border-emerald-900/40 py-20 px-6">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-12">
+        <span class="text-xs uppercase tracking-widest text-amber-400/80 font-medium">Sacred Tradition</span>
+        <h2 class="text-3xl md:text-4xl font-serif font-bold text-amber-100 mt-2">Glory of Tulsi in Sacred Scriptures</h2>
+      </div>
+
+      <div class="space-y-8 text-emerald-100/80 leading-relaxed font-light text-sm">
+        <div class="bg-stone-900/80 border border-emerald-900/50 p-6 rounded-2xl">
+          <h3 class="font-serif font-bold text-amber-200 text-lg mb-2">🌸 Sacred Origin: Made in Radha Kund</h3>
+          <p>
+            Every bead in our catalog is hand-carved at <strong>Radha Kund</strong>, the holy lake of Radharani in Vraja Dham, by traditional Vaisnava artisans.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-stone-900/80 border border-emerald-900/50 p-6 rounded-2xl">
+            <span class="text-amber-400 font-serif text-xs uppercase tracking-wider block mb-2">Padma Purana</span>
+            <blockquote class="italic text-amber-100/90 mb-3 border-l-2 border-amber-500 pl-3">
+              "Those who wear Tulsi neckbeads (Kanthi Mala) are protected from all fears, illness, and negative forces day and night."
+            </blockquote>
+          </div>
+
+          <div class="bg-stone-900/80 border border-emerald-900/50 p-6 rounded-2xl">
+            <span class="text-amber-400 font-serif text-xs uppercase tracking-wider block mb-2">Skanda Purana</span>
+            <blockquote class="italic text-amber-100/90 mb-3 border-l-2 border-amber-500 pl-3">
+              "Bathing while wearing Tulsi grants the spiritual merit of taking a dip in all holy rivers (Tirthas) throughout the universe."
+            </blockquote>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Product Catalog -->
+  <section id="buy" class="max-w-7xl mx-auto px-6 py-20">
+    <div class="text-center mb-14">
+      <span class="text-xs uppercase tracking-widest text-amber-400/80 font-medium">Sacred Crafts</span>
+      <h2 class="text-3xl md:text-5xl font-serif font-bold text-amber-100 mt-2">Sacred Tulsi Collection</h2>
+      <p class="text-emerald-100/60 text-sm mt-3">Authentic products with true-to-life photography</p>
+    </div>
+
+    <!-- CATEGORY 1: 1-ROUND KANTHI MALAS -->
+    <div class="mb-16">
+      <h3 class="text-2xl font-serif font-bold text-amber-300 border-b border-emerald-900/60 pb-3 mb-8 flex items-center gap-2">
+        <span>📿</span> 1-Round Tulsi Kanthi Malas
+      </h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+        <!-- Item 1 -->
+        <div class="bg-stone-900/70 border border-emerald-900/40 rounded-2xl p-5 flex flex-col justify-between subtle-glow">
+          <div>
+            <div class="h-56 rounded-xl overflow-hidden mb-4 relative">
+              <img src="https://i.imgur.com/ruNZ132.jpeg" alt="1 round thick tulsi kanthi mala" class="w-full h-full object-cover"/>
+              <button onclick="toggleWishlist('1 round thick tulsi kanthi mala')" class="absolute top-3 left-3 bg-stone-950/80 p-2 rounded-full border border-emerald-900 text-amber-300">❤️</button>
+            </div>
+            <h4 class="font-serif font-bold text-amber-100 text-base">1 round thick tulsi kanthi mala</h4>
+            <p class="text-emerald-100/60 text-xs mt-2 mb-4">Hand-carved thick round Tulsi beads strung on sturdy thread.</p>
+          </div>
+          <div class="border-t border-emerald-900/40 pt-4 flex justify-between items-center">
+            <span class="text-xl font-bold text-amber-300">₹299</span>
+            <button onclick="addToCart('1 round thick tulsi kanthi mala', 299)" class="bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs px-4 py-2 rounded-lg">Add to Cart</button>
+          </div>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="bg-stone-900/70 border border-emerald-900/40 rounded-2xl p-5 flex flex-col justify-between subtle-glow">
+          <div>
+            <div class="h-56 rounded-xl overflow-hidden mb-4 relative">
+              <img src="https://i.imgur.com/8rZVrD0.jpeg" alt="1 round micro beads tulsi kanthi mala" class="w-full h-full object-cover"/>
+              <button onclick="toggleWishlist('1 round micro beads tulsi kanthi mala')" class="absolute top-3 left-3 bg-stone-950/80 p-2 rounded-full border border-emerald-900 text-amber-300">❤️</button>
+            </div>
+            <h4 class="font-serif font-bold text-amber-100 text-base">1 round micro beads tulsi kanthi mala</h4>
+            <p class="text-emerald-100/60 text-xs mt-2 mb-4">Finely shaped micro Tulsi beads for a sleek and light neckpiece.</p>
+          </div>
+          <div class="border-t border-emerald-900/40 pt-4 flex justify-between items-center">
+            <span class="text-xl font-bold text-amber-300">₹249</span>
+            <button onclick="addToCart('1 round micro beads tulsi kanthi mala', 249)" class="bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs px-4 py-2 rounded-lg">Add to Cart</button>
+          </div>
+        </div>
+
+        <!-- Item 3 -->
+        <div class="bg-stone-900/70 border border-emerald-900/40 rounded-2xl p-5 flex flex-col justify-between subtle-glow">
+          <div>
+            <div class="h-56 rounded-xl overflow-hidden mb-4 relative">
+              <img src="https://i.imgur.com/LM4a7i2.jpeg" alt="1 round mridang beads tulsi kanthi mala" class="w-full h-full object-cover"/>
+              <button onclick="toggleWishlist('1 round mridang beads tulsi kanthi mala')" class="absolute top-3 left-3 bg-stone-950/80 p-2 rounded-full border border-emerald-900 text-amber-300">❤️</button>
+            </div>
+            <h4 class="font-serif font-bold text-amber-100 text-base">1 round mridang beads tulsi kanthi mala</h4>
+            <p class="text-emerald-100/60 text-xs mt-2 mb-4">Hand-cut beads in the classic drum shape of a Vraja Mridang.</p>
+          </div>
+          <div class="border-t border-emerald-900/40 pt-4 flex justify-between items-center">
+            <span class="text-xl font-bold text-amber-300">₹349</span>
+            <button onclick="addToCart('1 round mridang beads tulsi kanthi mala', 349)" class="bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs px-4 py-2 rounded-lg">Add to Cart</button>
+          </div>
+        </div>
+
+        <!-- Item 4 -->
+        <div class="bg-stone-900/70 border border-emerald-900/40 rounded-2xl p-5 flex flex-col justify-between subtle-glow">
+          <div>
+            <div class="h-56 rounded-xl overflow-hidden mb-4 relative">
+              <img src="https://i.imgur.com/9Bhv3lU.jpeg" alt="1 round cylindrical beads tulsi kanthi mala" class="w-full h-full object-cover"/>
+              <button onclick="toggleWishlist('1 round cylindrical beads tulsi kanthi mala')" class="absolute top-3 left-3 bg-stone-950/80 p-2 rounded-full border border-emerald-900 text-amber-300">❤️</button>
+            </div>
+            <h4 class="font-serif font-bold text-amber-100 text-base">1 round cylindrical beads tulsi kanthi mala</h4>
+            <p class="text-emerald-100/60 text-xs mt-2 mb-4">Straight-cut cylindrical shaped Tulsi wood beads with smooth finish.</p>
+          </div>
+          <div class="border-t border-emerald-900/40 pt-4 flex justify-between items-center">
+            <span class="text-xl font-bold text-amber-300">₹329</span>
+            <button onclick="addToCart('1 round cylindrical beads tulsi kanthi mala', 329)" class="bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs px-4 py-2 rounded-lg">Add to Cart</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- CATEGORY 2: 2-ROUND & 3-ROUND KANTHI MALAS -->
+    <div class="mb-16">
+      <h3 class="text-2xl font-serif font-bold text-amber-300 border-b border-emerald-900/60 pb-3 mb-8 flex items-center gap-2">
+        <span>✨</span> Multi-Round Kanthi Malas
+      </h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+        <div class="bg-stone-900/70 border border-emerald-900/40 rounded-2xl p-5 flex flex-col justify-between subtle-glow">
+          <div>
+            <div class="h-56 rounded-xl overflow-hidden mb-4 relative">
+              <img src="https://i.imgur.com/RCagtVV.jpeg" alt="2 rounds micro beads tulsi kanthi mala" class="w-full h-full object-cover"/>
+              <button onclick="toggleWishlist('2 rounds micro beads tulsi kanthi mala')" class="absolute top-3 left-3 bg-stone-950/80 p-2 rounded-full border border-emerald-900 text-amber-300">❤️</button>
+            </div>
+            <h4 class="font-serif font-bold text-amber-100 text-base">2 rounds micro beads tulsi kanthi mala</h4>
+            <p class="text-emerald-100/60 text-xs mt-2 mb-4">Double-stranded micro Tulsi beads for a neat devotional look.</p>
+          </div>
+          <div class="border-t border-emerald-900/40 pt-4 flex justify-between items-center">
+            <span class="text-xl font-bold text-amber-300">₹449</span>
+            <button onclick="addToCart('2 rounds micro beads tulsi kanthi mala', 449)" class="bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs px-4 py-2 rounded-lg">Add to Cart</button>
+          </div>
+        </div>
+
+        <div class="bg-stone-900/70 border border-emerald-900/40 rounded-2xl p-5 flex flex-col justify-between subtle-glow">
+          <div>
+            <div class="h-56 rounded-xl overflow-hidden mb-4 relative">
+              <img src="https://i.imgur.com/Qn40LLn.jpeg" alt="2 rounds mridang beads tulsi kanthi mala" class="w-full h-full object-cover"/>
+              <button onclick="toggleWishlist('2 rounds mridang beads tulsi kanthi mala')" class="absolute top-3 left-3 bg-stone-950/80 p-2 rounded-full border border-emerald-900 text-amber-300">❤️</button>
+            </div>
+            <h4 class="font-serif font-bold text-amber-100 text-base">2 rounds mridang beads tulsi kanthi mala</h4>
+            <p class="text-emerald-100/60 text-xs mt-2 mb-4">Double loop Kanthi Mala strung with traditional Mridang cut beads.</p>
+          </div>
+          <div class="border-t border-emerald-900/40 pt-4 flex justify-between items-center">
+            <span class="text-xl font-bold text-amber-300">₹549</span>
+            <button onclick="addToCart('2 rounds mridang beads tulsi kanthi mala', 549)" class="bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs px-4 py-2 rounded-lg">Add to Cart</button>
+          </div>
+        </div>
+
+        <div class="bg-stone-900/70 border border-emerald-900/40 rounded-2xl p-5 flex flex-col justify-between subtle-glow">
+          <div>
+            <div class="h-56 rounded-xl overflow-hidden mb-4 relative">
+              <img src="https://i.imgur.com/1so1QbB.jpeg" alt="3 round micro beads tulsi kanthi mala" class="w-full h-full object-cover"/>
+              <button onclick="toggleWishlist('3 round micro beads tulsi kanthi mala')" class="absolute top-3 left-3 bg-stone-950/80 p-2 rounded-full border border-emerald-900 text-amber-300">❤️</button>
+            </div>
+            <h4 class="font-serif font-bold text-amber-100 text-base">3 round micro beads tulsi kanthi mala</h4>
+            <p class="text-emerald-100/60 text-xs mt-2 mb-4">Triple-strand micro bead neckbeads crafted at Radha Kund.</p>
+          </div>
+          <div class="border-t border-emerald-900/40 pt-4 flex justify-between items-center">
+            <span class="text-xl font-bold text-amber-300">₹649</span>
+            <button onclick="addToCart('3 round micro beads tulsi kanthi mala', 649)" class="bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs px-4 py-2 rounded-lg">Add to Cart</button>
+          </div>
+        </div>
+
+        <div class="bg-stone-900/70 border border-emerald-900/40 rounded-2xl p-5 flex flex-col justify-between subtle-glow">
+          <div>
+            <div class="h-56 rounded-xl overflow-hidden mb-4 relative">
+              <img src="https://i.imgur.com/LDZpCaw.jpeg" alt="Polished shyam tulsi black premium 3 rounds kanthi mala" class="w-full h-full object-cover"/>
+              <button onclick="toggleWishlist('Polished shyam tulsi black premium 3 rounds kanthi mala')" class="absolute top-3 left-3 bg-stone-950/80 p-2 rounded-full border border-emerald-900 text-amber-300">❤️</button>
+            </div>
+            <h4 class="font-serif font-bold text-amber-100 text-base">Polished shyam tulsi black premium 3 rounds kanthi mala</h4>
+            <p class="text-emerald-100/60 text-xs mt-2 mb-4">Dark Krishna-Tulsi beads polished to perfection in a triple-round style.</p>
+          </div>
+          <div class="border-t border-emerald-900/40 pt-4 flex justify-between items-center">
+            <span class="text-xl font-bold text-amber-300">₹899</span>
+            <button onclick="addToCart('Polished shyam tulsi black premium 3 rounds kanthi mala', 899)" class="bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs px-4 py-2 rounded-lg">Add to Cart</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- CATEGORY 3: BRACELETS, EARRINGS & CHANTING BAG -->
+    <div class="mb-16">
+      <h3 class="text-2xl font-serif font-bold text-amber-300 border-b border-emerald-900/60 pb-3 mb-8 flex items-center gap-2">
+        <span>💫</span> Bracelets, Earrings & Chanting Accessories
+      </h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <div class="bg-stone-900/70 border border-emerald-900/40 rounded-2xl p-5 flex flex-col justify-between subtle-glow">
+          <div>
+            <div class="h-56 rounded-xl overflow-hidden mb-4 relative">
+              <img src="https://i.imgur.com/zITZofp.jpeg" alt="Tulsi beads bracelet" class="w-full h-full object-cover"/>
+              <button onclick="toggleWishlist('Tulsi beads bracelet')" class="absolute top-3 left-3 bg-stone-950/80 p-2 rounded-full border border-emerald-900 text-amber-300">❤️</button>
+            </div>
+            <h4 class="font-serif font-bold text-amber-100 text-base">Tulsi beads bracelet</h4>
+            <p class="text-emerald-100/60 text-xs mt-2 mb-4">Simple stretchable wristlet with hand-carved natural Tulsi beads.</p>
+          </div>
+          <div class="border-t border-emerald-900/40 pt-4 flex justify-between items-center">
+            <span class="text-xl font-bold text-amber-300">₹199</span>
+            <button onclick="addToCart('Tulsi beads bracelet', 199)" class="bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs px-4 py-2 rounded-lg">Add to Cart</button>
+          </div>
+        </div>
+
+        <div class="bg-stone-900/70 border border-emerald-900/40 rounded-2xl p-5 flex flex-col justify-between subtle-glow">
+          <div>
+            <div class="h-56 rounded-xl overflow-hidden mb-4 relative">
+              <img src="https://i.imgur.com/8Ga8FCf.jpeg" alt="Double layer braided tulsi braclet" class="w-full h-full object-cover"/>
+              <button onclick="toggleWishlist('Double layer braided tulsi braclet')" class="absolute top-3 left-3 bg-stone-950/80 p-2 rounded-full border border-emerald-900 text-amber-300">❤️</button>
+            </div>
+            <h4 class="font-serif font-bold text-amber-100 text-base">Double layer braided tulsi braclet</h4>
+            <p class="text-emerald-100/60 text-xs mt-2 mb-4">Woven double-strand wristlet with secure lock clasp.</p>
+          </div>
+          <div class="border-t border-emerald-900/40 pt-4 flex justify-between items-center">
+            <span class="text-xl font-bold text-amber-300">₹299</span>
+            <button onclick="addToCart('Double layer braided tulsi braclet', 299)" class="bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs px-4 py-2 rounded-lg">Add to Cart</button>
+          </div>
+        </div>
+
+        <div class="bg-stone-900/70 border border-emerald-900/40 rounded-2xl p-5 flex flex-col justify-between subtle-glow">
+          <div>
+            <div class="h-56 rounded-xl overflow-hidden mb-4 relative">
+              <img src="https://i.imgur.com/IpiMk0E.jpeg" alt="Tulsi earings studs" class="w-full h-full object-cover"/>
+              <button onclick="toggleWishlist('Tulsi earings studs')" class="absolute top-3 left-3 bg-stone-950/80 p-2 rounded-full border border-emerald-900 text-amber-300">❤️</button>
+            </div>
+            <h4 class="font-serif font-bold text-amber-100 text-base">Tulsi earings studs</h4>
+            <p class="text-emerald-100/60 text-xs mt-2 mb-4">Minimalist hand-carved Tulsi wood ear studs for everyday wear.</p>
+          </div>
+          <div class="border-t border-emerald-900/40 pt-4 flex justify-between items-center">
+            <span class="text-xl font-bold text-amber-300">₹249</span>
+            <button onclick="addToCart('Tulsi earings studs', 249)" class="bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs px-4 py-2 rounded-lg">Add to Cart</button>
+          </div>
+        </div>
+
+        <div class="bg-stone-900/70 border border-emerald-900/40 rounded-2xl p-5 flex flex-col justify-between subtle-glow">
+          <div>
+            <div class="h-56 rounded-xl overflow-hidden mb-4 relative">
+              <img src="https://i.imgur.com/dZxsio6.jpeg" alt="Tulsi floral eat studs" class="w-full h-full object-cover"/>
+              <button onclick="toggleWishlist('Tulsi floral eat studs')" class="absolute top-3 left-3 bg-stone-950/80 p-2 rounded-full border border-emerald-900 text-amber-300">❤️</button>
+            </div>
+            <h4 class="font-serif font-bold text-amber-100 text-base">Tulsi floral eat studs</h4>
+            <p class="text-emerald-100/60 text-xs mt-2 mb-4">Intricately carved flower-patterned Tulsi ear studs.</p>
+          </div>
+          <div class="border-t border-emerald-900/40 pt-4 flex justify-between items-center">
+            <span class="text-xl font-bold text-amber-300">₹299</span>
+            <button onclick="addToCart('Tulsi floral eat studs', 299)" class="bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs px-4 py-2 rounded-lg">Add to Cart</button>
+          </div>
+        </div>
+
+        <div class="bg-stone-900/70 border border-emerald-900/40 rounded-2xl p-5 flex flex-col justify-between subtle-glow">
+          <div>
+            <div class="h-56 rounded-xl overflow-hidden mb-4 relative">
+              <img src="https://i.imgur.com/YrnhloJ.jpeg" alt="Cotton japa white bead bag" class="w-full h-full object-cover"/>
+              <button onclick="toggleWishlist('Cotton japa white bead bag')" class="absolute top-3 left-3 bg-stone-950/80 p-2 rounded-full border border-emerald-900 text-amber-300">❤️</button>
+            </div>
+            <h4 class="font-serif font-bold text-amber-100 text-base">Cotton japa white bead bag</h4>
+            <p class="text-emerald-100/60 text-xs mt-2 mb-4">Pure cotton white Japa chanting bag to keep your mala clean and protected.</p>
+          </div>
+          <div class="border-t border-emerald-900/40 pt-4 flex justify-between items-center">
+            <span class="text-xl font-bold text-amber-300">₹199</span>
+            <button onclick="addToCart('Cotton japa white bead bag', 199)" class="bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs px-4 py-2 rounded-lg">Add to Cart</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Benefits Section -->
+  <section id="benefits" class="py-20 max-w-5xl mx-auto px-6 border-t border-emerald-900/40">
+    <div class="text-center mb-14">
+      <span class="text-xs uppercase tracking-widest text-amber-400/80 font-medium">Holistic Well-being</span>
+      <h2 class="text-3xl font-serif font-bold text-amber-100 mt-2">Material & Spiritual Benefits</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="bg-stone-900/60 border border-emerald-900/40 rounded-2xl p-6 text-center">
+        <div class="text-4xl mb-4">🧘‍♂️</div>
+        <h3 class="font-serif font-bold text-amber-200 text-lg mb-2">Spiritual Protection</h3>
+        <p class="text-emerald-100/60 text-sm leading-relaxed">Protects from negative energy, balances throat chakra, and strengthens Krishna bhakti.</p>
+      </div>
+      <div class="bg-stone-900/60 border border-emerald-900/40 rounded-2xl p-6 text-center">
+        <div class="text-4xl mb-4">❄️</div>
+        <h3 class="font-serif font-bold text-amber-200 text-lg mb-2">Body Cooling & Health</h3>
+        <p class="text-emerald-100/60 text-sm leading-relaxed">Natural Holy Basil wood absorbs excessive heat and promotes peace of mind.</p>
+      </div>
+      <div class="bg-stone-900/60 border border-emerald-900/40 rounded-2xl p-6 text-center">
+        <div class="text-4xl mb-4">🌊</div>
+        <h3 class="font-serif font-bold text-amber-200 text-lg mb-2">Tirtha Bathing Merit</h3>
+        <p class="text-emerald-100/60 text-sm leading-relaxed">As stated in the Skanda Purana, bathing while wearing Tulsi offers the spiritual benefit of bathing in all holy rivers.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Accordion Q&A Section -->
+  <section id="faq" class="bg-emerald-950/30 border-t border-emerald-900/40 py-20">
+    <div class="max-w-3xl mx-auto px-6">
+      <div class="text-center mb-12">
+        <span class="text-xs uppercase tracking-widest text-amber-400/80 font-medium">Knowledge & Guidance</span>
+        <h2 class="text-3xl font-serif font-bold text-amber-100 mt-2">Questions & Answers</h2>
+      </div>
+      <div class="space-y-4">
+        
+        <details class="bg-stone-900/80 border border-emerald-900/40 rounded-xl p-4 cursor-pointer">
+          <summary class="font-semibold text-amber-200 text-sm">Can I wear the Tulsi Mala while bathing?</summary>
+          <p class="mt-3 text-emerald-100/70 text-xs leading-relaxed font-light">
+            <strong>Yes!</strong> According to the <em>Skanda Purana</em>, bathing while wearing Tulsi wood grants the immense spiritual benefit of bathing in all holy rivers (tirthas). Water passing over sacred Tulsi purifies both physical and subtle bodies.
+          </p>
+        </details>
+
+        <details class="bg-stone-900/80 border border-emerald-900/40 rounded-xl p-4 cursor-pointer">
+          <summary class="font-semibold text-amber-200 text-sm">Where are these malas crafted?</summary>
+          <p class="mt-3 text-emerald-100/70 text-xs leading-relaxed font-light">
+            Each mala is hand-carved specifically at <strong>Radha Kund</strong> (Vraja Dham) by local traditional Vaisnava artisans.
+          </p>
+        </details>
+
+        <details class="bg-stone-900/80 border border-emerald-900/40 rounded-xl p-4 cursor-pointer">
+          <summary class="font-semibold text-amber-200 text-sm">How to verify authenticity?</summary>
+          <p class="mt-3 text-emerald-100/70 text-xs leading-relaxed font-light">
+            Genuine Holy Basil wood carries a light herbal scent and floats in water.
+          </p>
+        </details>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Customer Reviews -->
+  <section id="reviews" class="max-w-5xl mx-auto px-6 py-20">
+    <div class="text-center mb-14">
+      <span class="text-xs uppercase tracking-widest text-amber-400/80 font-medium">Devotee Feedback</span>
+      <h2 class="text-3xl font-serif font-bold text-amber-100 mt-2">Customer Reviews</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="bg-stone-900/60 border border-emerald-900/40 rounded-2xl p-6">
+        <div class="text-amber-400 mb-3">★★★★★</div>
+        <p class="text-emerald-100/80 italic text-sm mb-4 leading-relaxed">"Knowing this mala comes straight from Radha Kund makes it very special. The wood quality and cotton threading are top-notch."</p>
+        <div class="font-bold text-amber-200 text-sm">— Madhav D., Vrindavan</div>
+      </div>
+      <div class="bg-stone-900/60 border border-emerald-900/40 rounded-2xl p-6">
+        <div class="text-amber-400 mb-3">★★★★★</div>
+        <p class="text-emerald-100/80 italic text-sm mb-4 leading-relaxed">"Very smooth beads and genuine herbal aroma. I wear it during daily shower and japa practice."</p>
+        <div class="font-bold text-amber-200 text-sm">— Radhika S., Mathura</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Us Section -->
+  <section id="contact" class="bg-emerald-950/40 border-t border-emerald-900/40 py-20 px-6">
+    <div class="max-w-3xl mx-auto text-center">
+      <span class="text-xs uppercase tracking-widest text-amber-400/80 font-medium">Get in Touch</span>
+      <h2 class="text-3xl font-serif font-bold text-amber-100 mt-2 mb-6">Contact Us</h2>
+      <p class="text-emerald-100/70 text-sm mb-8 font-light">Have questions about sizes or bulk orders? Reach out directly.</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+        <div class="p-4 bg-stone-900/80 border border-emerald-900/40 rounded-xl">
+          <div class="text-2xl mb-2">📍</div>
+          <div class="font-bold text-amber-200 text-xs uppercase">Location</div>
+          <div class="text-xs text-emerald-100/60 mt-1">Radha Kund, Mathura, UP</div>
+        </div>
+        <div class="p-4 bg-stone-900/80 border border-emerald-900/40 rounded-xl">
+          <div class="text-2xl mb-2">💬</div>
+          <div class="font-bold text-amber-200 text-xs uppercase">WhatsApp</div>
+          <div class="text-xs text-emerald-100/60 mt-1">+91 98765 43210</div>
+        </div>
+        <div class="p-4 bg-stone-900/80 border border-emerald-900/40 rounded-xl">
+          <div class="text-2xl mb-2">✉️</div>
+          <div class="font-bold text-amber-200 text-xs uppercase">Email</div>
+          <div class="text-xs text-emerald-100/60 mt-1">support@radhakundtulsi.com</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-stone-950 border-t border-emerald-900/40 py-8 text-center text-xs text-emerald-100/40">
+    <p>© 2026 Sacred Radha Kund Tulsi. All Rights Reserved.</p>
+  </footer>
+
+  <!-- Interactive JavaScript -->
+  <script>
+    let cart = [];
+    let wishlist = [];
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebar-overlay');
+      sidebar.classList.toggle('-translate-x-full');
+      overlay.classList.toggle('hidden');
+    }
+
+    function toggleCart() {
+      const cartDrawer = document.getElementById('cart-drawer');
+      const overlay = document.getElementById('cart-overlay');
+      cartDrawer.classList.toggle('translate-x-full');
+      overlay.classList.toggle('hidden');
+    }
+
+    function addToCart(name, price) {
+      cart.push({ name, price });
+      updateCartUI();
+      toggleCart();
+    }
+
+    function updateCartUI() {
+      const cartCount = document.getElementById('cart-count');
+      const cartItems = document.getElementById('cart-items');
+      const cartTotal = document.getElementById('cart-total');
+
+      cartCount.innerText = cart.length;
+
+      if (cart.length === 0) {
+        cartItems.innerHTML = '<p class="text-center italic">Your cart is currently empty.</p>';
+        cartTotal.innerText = '₹0';
+        return;
+      }
+
+      let html = '';
+      let total = 0;
+      cart.forEach((item, index) => {
+        total += item.price;
+        html += `
+          <div class="flex justify-between items-center border-b border-emerald-900/30 pb-2">
+            <div>
+              <div class="font-medium text-amber-100 text-xs">${item.name}</div>
+              <div class="text-amber-400 text-xs">₹${item.price}</div>
+            </div>
+            <button onclick="removeFromCart(${index})" class="text-red-400 text-xs">Remove</button>
+          </div>
+        `;
+      });
+
+      cartItems.innerHTML = html;
+      cartTotal.innerText = '₹' + total;
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      updateCartUI();
+    }
+
+    function toggleWishlist(name) {
+      if (wishlist.includes(name)) {
+        wishlist = wishlist.filter(item => item !== name);
+        alert(name + ' removed from Wishlist!');
+      } else {
+        wishlist.push(name);
+        alert(name + ' added to Wishlist!');
+      }
+      document.getElementById('wishlist-count').innerText = wishlist.length;
+    }
+  </script>
+
+</body>
+</html>

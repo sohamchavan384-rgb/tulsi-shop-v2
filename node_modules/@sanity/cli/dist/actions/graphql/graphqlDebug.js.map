@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/actions/graphql/graphqlDebug.ts"],"sourcesContent":["import {subdebug} from '@sanity/cli-core'\n\nexport const graphqlDebug = subdebug('graphql')\n"],"names":["subdebug","graphqlDebug"],"mappings":"AAAA,SAAQA,QAAQ,QAAO,mBAAkB;AAEzC,OAAO,MAAMC,eAAeD,SAAS,WAAU"}

@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/actions/documents/constants.ts"],"sourcesContent":["export const DOCUMENTS_API_VERSION = '2025-08-15'\n"],"names":["DOCUMENTS_API_VERSION"],"mappings":"AAAA,OAAO,MAAMA,wBAAwB,aAAY"}
