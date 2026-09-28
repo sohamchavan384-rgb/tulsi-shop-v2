@@ -20,64 +20,63 @@ interface CartItem extends Product {
 }
 
 interface QAItem {
-  id: number
+  id: number | string
   question: string
   answer: string
 }
 
 interface Review {
-  id: number
+  id: number | string
   name: string
   rating: number
   comment: string
   imageUrl?: string
 }
 
+const defaultQA: QAItem[] = [
+  {
+    id: 'def-1',
+    question: "Can I wear the Tulsi Mala while bathing?",
+    answer: "Yes! According to the Skanda Purana, bathing while wearing Tulsi wood grants the immense spiritual benefit of bathing in all holy rivers (tirthas). Water passing over sacred Tulsi purifies both physical and subtle bodies."
+  },
+  {
+    id: 'def-2',
+    question: "Where are these malas crafted?",
+    answer: "All malas and bracelets are hand-carved directly at Radha Kund, Mathura (Vraja Dham) by local Vaisnava craftspeople."
+  },
+  {
+    id: 'def-3',
+    question: "How to verify authenticity?",
+    answer: "Pure Tulsi wood has a distinct natural herbal aroma, light weight, and unique natural grain patterns."
+  }
+]
+
+const defaultReviews: Review[] = [
+  {
+    id: 'def-rev-1',
+    name: "Aarav Sharma",
+    rating: 5,
+    comment: "Received authentic Tulsi mala directly from Radha Kund. Pure fragrance and wonderful craftsmanship!",
+  }
+]
+
 export default function InteractiveStore({ initialProducts }: { initialProducts?: Product[] }) {
   const [isNavOpen, setIsNavOpen] = useState(false)
   const [isCartOpen, setIsCartOpen] = useState(false)
   const [cart, setCart] = useState<CartItem[]>([])
+  const [wishlistCount, setWishlistCount] = useState(0)
 
   const products: Product[] = initialProducts && initialProducts.length > 0 ? initialProducts : [
     {
       id: 1,
-      name: "1-Round Thick Radha Kund Tulsi Kanthi Mala",
+      name: "1 round thick tulsi kanthi mala",
       price: 399,
-      description: "Hand-carved thick round Tulsi beads strung on sturdy thread by Vaisnava artisans at Radha Kund."
-    },
-    {
-      id: 2,
-      name: "Raw Carved Tulsi Wrist Bracelet",
-      price: 249,
-      description: "Authentic natural Tulsi wood beads with adjustable knot for daily wear and spiritual protection."
-    }
-  ]
-
-  // Default fallback data
-  const defaultQA: QAItem[] = [
-    {
-      id: 1,
-      question: "Can I wear the Tulsi Mala while bathing?",
-      answer: "Yes! According to the Skanda Purana, bathing while wearing Tulsi wood grants the immense spiritual benefit of bathing in all holy rivers (tirthas)."
-    },
-    {
-      id: 2,
-      question: "Where are these malas crafted?",
-      answer: "All malas and bracelets are hand-carved directly at Radha Kund, Mathura (Vraja Dham) by local Vaisnava craftspeople."
-    }
-  ]
-
-  const defaultReviews: Review[] = [
-    {
-      id: 1,
-      name: "Aarav Sharma",
-      rating: 5,
-      comment: "Received authentic Tulsi mala directly from Radha Kund. Pure fragrance and wonderful craftsmanship!",
+      description: "Hand-carved thick round Tulsi beads strung on sturdy thread."
     }
   ]
 
   const [qaList, setQaList] = useState<QAItem[]>(defaultQA)
-  const [expandedQa, setExpandedQa] = useState<number | null>(1)
+  const [expandedQa, setExpandedQa] = useState<number | string | null>('def-1')
   const [newQuestion, setNewQuestion] = useState("")
   const [newAnswer, setNewAnswer] = useState("")
 
@@ -87,21 +86,33 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
   const [revComment, setRevComment] = useState("")
   const [revImage, setRevImage] = useState<string | null>(null)
 
-  // Fetch Reviews & Q&A from Supabase on mount
+  // Fetch Reviews & Q&A from Supabase and merge with defaults
   useEffect(() => {
     async function fetchData() {
       if (!supabaseUrl || !supabaseAnonKey) return
 
-      // Fetch Q&As
+      // Fetch Q&A
       const { data: qaData } = await supabase.from('qa_items').select('*').order('created_at', { ascending: false })
       if (qaData && qaData.length > 0) {
-        setQaList(qaData.map(item => ({ id: item.id, question: item.question, answer: item.answer || 'Answer pending...' })))
+        const fetchedQa = qaData.map(item => ({
+          id: item.id,
+          question: item.question,
+          answer: item.answer || 'Answer pending...'
+        }))
+        setQaList([...fetchedQa, ...defaultQA])
       }
 
       // Fetch Reviews
       const { data: revData } = await supabase.from('reviews').select('*').order('created_at', { ascending: false })
       if (revData && revData.length > 0) {
-        setReviews(revData.map(item => ({ id: item.id, name: item.name, rating: item.rating, comment: item.comment, imageUrl: item.image_url })))
+        const fetchedRev = revData.map(item => ({
+          id: item.id,
+          name: item.name,
+          rating: item.rating,
+          comment: item.comment,
+          imageUrl: item.image_url
+        }))
+        setReviews([...fetchedRev, ...defaultReviews])
       }
     }
     fetchData()
@@ -132,6 +143,10 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
     setCart(prev => prev.filter(item => item.id !== id))
   }
 
+  const toggleWishlist = () => {
+    setWishlistCount(prev => (prev === 0 ? 1 : 0))
+  }
+
   const cartTotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0)
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0)
 
@@ -146,7 +161,7 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
     }
 
     if (supabaseUrl && supabaseAnonKey) {
-      const { data, error } = await supabase.from('qa_items').insert([qaToInsert]).select()
+      const { data } = await supabase.from('qa_items').insert([qaToInsert]).select()
       if (data && data[0]) {
         setQaList(prev => [{ id: data[0].id, question: data[0].question, answer: data[0].answer }, ...prev])
       }
@@ -202,28 +217,28 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
   }
 
   return (
-    <div style={{ backgroundColor: '#F9F6EE', color: '#1C201D', minHeight: '100vh', fontFamily: 'sans-serif', margin: 0, padding: 0, position: 'relative' }}>
+    <div style={{ backgroundColor: '#FDFBF7', color: '#2C3E2E', minHeight: '100vh', fontFamily: 'serif', margin: 0, padding: 0, position: 'relative' }}>
       
-      {/* Top Banner */}
-      <div style={{ backgroundColor: '#0F2E1B', color: '#E2D4B7', fontSize: '11px', padding: '8px 16px', textAlign: 'center', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '1px' }}>
+      {/* Top Notification Banner */}
+      <div style={{ backgroundColor: '#2D4A3E', color: '#FDFBF7', fontSize: '10px', padding: '6px 12px', textAlign: 'center', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '1px' }}>
         ✨ HAND-CARVED AT SACRED RADHA KUND • DIRECT WHATSAPP ORDERING ACROSS INDIA ✨
       </div>
 
-      <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '16px' }}>
+      <div style={{ maxWidth: '600px', margin: '0 auto', padding: '16px' }}>
         
         {/* Header */}
-        <header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '16px', borderBottom: '1px solid #E3DEC3' }}>
+        <header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '16px', borderBottom: '1px solid #E2D8C3' }}>
           <button 
             onClick={() => setIsNavOpen(true)}
             aria-label="Open Navigation Menu"
-            style={{ padding: '8px 12px', color: '#0F2E1B', border: '1px solid #E3DEC3', backgroundColor: '#FAF8F2', borderRadius: '6px', fontWeight: 'bold', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
+            style={{ padding: '6px 10px', color: '#2C3E2E', border: '1px solid #D1C4A9', backgroundColor: '#FFF', borderRadius: '6px', fontWeight: 'bold', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
           >
-            <span>☰</span>
-            <span>🌿</span>
+            <span style={{ fontSize: '16px' }}>☰</span>
+            <span style={{ fontSize: '14px' }}>🌿</span>
           </button>
 
           <div style={{ textAlign: 'center' }}>
-            <h1 style={{ fontSize: '20px', fontWeight: '900', color: '#0F2E1B', margin: 0, fontFamily: 'serif' }}>
+            <h1 style={{ fontSize: '18px', fontWeight: '900', color: '#1B2E22', margin: 0 }}>
               Sacred Radha Kund Tulsi
             </h1>
           </div>
@@ -231,65 +246,155 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
           <button 
             onClick={() => setIsCartOpen(true)}
             aria-label="Open Shopping Cart Drawer"
-            style={{ padding: '8px 12px', color: '#0F2E1B', border: '1px solid #E3DEC3', backgroundColor: '#FAF8F2', borderRadius: '6px', fontWeight: 'bold', cursor: 'pointer', position: 'relative' }}
+            style={{ padding: '6px 10px', color: '#2C3E2E', border: '1px solid #D1C4A9', backgroundColor: '#FFF', borderRadius: '6px', fontWeight: 'bold', cursor: 'pointer', position: 'relative' }}
           >
             <span>🛍️</span>
-            <span style={{ backgroundColor: '#C27803', color: '#FFFFFF', borderRadius: '50%', padding: '2px 6px', fontSize: '10px', marginLeft: '4px', fontWeight: 'bold' }}>
+            <span style={{ backgroundColor: '#C87D12', color: '#FFF', borderRadius: '50%', padding: '2px 6px', fontSize: '10px', marginLeft: '4px', fontWeight: 'bold' }}>
               {cartCount}
             </span>
           </button>
         </header>
 
         {/* Hero Section */}
-        <section id="hero" style={{ padding: '32px 0', borderBottom: '1px solid #E3DEC3', textAlign: 'center' }}>
-          <span style={{ fontSize: '11px', fontWeight: 'bold', letterSpacing: '1px', color: '#0F2E1B', textTransform: 'uppercase', backgroundColor: '#EAE5D4', padding: '4px 10px', borderRadius: '2px', borderLeft: '3px solid #0F2E1B' }}>
+        <section id="hero" style={{ padding: '28px 0', borderBottom: '1px solid #E2D8C3', textAlign: 'center' }}>
+          <span style={{ fontSize: '10px', fontWeight: 'bold', letterSpacing: '1px', color: '#2D4A3E', textTransform: 'uppercase', backgroundColor: '#EBF2EE', padding: '4px 10px', borderRadius: '12px', border: '1px solid #C8DEC3' }}>
             ● Hand-Carved at Sacred Radha Kund
           </span>
 
-          <h2 style={{ fontSize: '28px', fontWeight: '900', fontFamily: 'serif', color: '#0F2E1B', marginTop: '16px', marginBottom: '12px', lineHeight: '1.2' }}>
+          <h2 style={{ fontSize: '24px', fontWeight: '900', color: '#1B2E22', marginTop: '16px', marginBottom: '12px', lineHeight: '1.2' }}>
             Blessed Radha Kund Tulsi Kanthi Malas, Bracelets & Jewelry
           </h2>
 
-          <p style={{ fontSize: '13px', color: '#48544B', lineHeight: '1.6', maxWidth: '600px', margin: '0 auto 20px auto' }}>
-            Explore our authentic collection of hand-carved Tulsi wood items directly from our Radha Kund workshop.
+          <p style={{ fontSize: '12px', color: '#556B5B', lineHeight: '1.6', margin: '0 auto 20px auto', fontFamily: 'sans-serif' }}>
+            Explore our authentic collection of hand-carved Tulsi wood items with accurate images directly from our Radha Kund workshop.
           </p>
 
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', flexWrap: 'wrap' }}>
-            <a href="#catalog" style={{ backgroundColor: '#C27803', color: '#FFFFFF', fontWeight: 'bold', fontSize: '12px', textTransform: 'uppercase', letterSpacing: '1px', padding: '12px 24px', borderRadius: '20px', textDecoration: 'none' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            <a href="#catalog" style={{ backgroundColor: '#C87D12', color: '#FFF', fontWeight: 'bold', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '1px', padding: '12px', borderRadius: '20px', textDecoration: 'none', textAlign: 'center' }}>
               BROWSE COLLECTION
             </a>
-            <a href="#scriptures" style={{ backgroundColor: '#0F2E1B', color: '#E2D4B7', fontWeight: 'bold', fontSize: '12px', textTransform: 'uppercase', letterSpacing: '1px', padding: '12px 24px', borderRadius: '20px', textDecoration: 'none' }}>
-              READ SCRIPTURE BENEFITS
+            <a href="#scriptures" style={{ backgroundColor: '#FFF', color: '#1B2E22', fontWeight: 'bold', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '1px', padding: '12px', borderRadius: '20px', textDecoration: 'none', textAlign: 'center', border: '1px solid #D1C4A9' }}>
+              Read Scripture Benefits
             </a>
           </div>
         </section>
 
-        {/* Product Catalog Section */}
-        <section id="catalog" style={{ padding: '32px 0', borderBottom: '1px solid #E3DEC3' }}>
-          <div style={{ marginBottom: '20px', textAlign: 'center' }}>
-            <span style={{ fontSize: '10px', fontWeight: 'bold', letterSpacing: '1.5px', color: '#525E55', textTransform: 'uppercase' }}>SACRED CRAFTS</span>
-            <h3 style={{ fontSize: '22px', fontWeight: '900', fontFamily: 'serif', color: '#0F2E1B', margin: '4px 0 0 0' }}>
-              Sacred Tulsi Collection
+        {/* Sacred Scriptures Section */}
+        <section id="scriptures" style={{ padding: '28px 0', borderBottom: '1px solid #E2D8C3' }}>
+          <div style={{ textAlign: 'center', marginBottom: '16px' }}>
+            <span style={{ fontSize: '9px', fontWeight: 'bold', letterSpacing: '1.5px', color: '#C87D12', textTransform: 'uppercase' }}>SACRED TRADITION</span>
+            <h3 style={{ fontSize: '20px', fontWeight: '900', color: '#1B2E22', margin: '4px 0 0 0' }}>
+              Glory of Tulsi in Sacred Scriptures
             </h3>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <div style={{ backgroundColor: '#FFF', border: '1px solid #E2D8C3', borderRadius: '8px', padding: '14px' }}>
+              <div style={{ fontSize: '13px', fontWeight: 'bold', color: '#1B2E22', marginBottom: '6px' }}>🌸 Sacred Origin: Made in Radha Kund</div>
+              <p style={{ fontSize: '11px', color: '#556B5B', margin: 0, lineHeight: '1.5', fontFamily: 'sans-serif' }}>
+                Every bead in our catalog is hand-carved at Radha Kund, the holy lake of Radharani in Vraja Dham, by traditional Vaisnava artisans.
+              </p>
+            </div>
+
+            <div style={{ backgroundColor: '#FFF', borderLeft: '3px solid #C87D12', borderRadius: '4px', padding: '14px', borderTop: '1px solid #E2D8C3', borderRight: '1px solid #E2D8C3', borderBottom: '1px solid #E2D8C3' }}>
+              <div style={{ fontSize: '10px', fontWeight: 'bold', color: '#C87D12', letterSpacing: '1px', marginBottom: '4px' }}>PADMA PURANA</div>
+              <p style={{ fontSize: '11px', color: '#2C3E2E', fontStyle: 'italic', margin: 0, lineHeight: '1.5' }}>
+                &quot;Those who wear Tulsi neckbeads (Kanthi Mala) are protected from all fears, illness, and negative forces day and night.&quot;
+              </p>
+            </div>
+
+            <div style={{ backgroundColor: '#FFF', borderLeft: '3px solid #C87D12', borderRadius: '4px', padding: '14px', borderTop: '1px solid #E2D8C3', borderRight: '1px solid #E2D8C3', borderBottom: '1px solid #E2D8C3' }}>
+              <div style={{ fontSize: '10px', fontWeight: 'bold', color: '#C87D12', letterSpacing: '1px', marginBottom: '4px' }}>SKANDA PURANA</div>
+              <p style={{ fontSize: '11px', color: '#2C3E2E', fontStyle: 'italic', margin: 0, lineHeight: '1.5' }}>
+                &quot;Bathing while wearing Tulsi grants the spiritual merit of taking a dip in all holy rivers (Tirthas) throughout the universe.&quot;
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Material & Spiritual Benefits */}
+        <section id="benefits" style={{ padding: '28px 0', borderBottom: '1px solid #E2D8C3' }}>
+          <div style={{ textAlign: 'center', marginBottom: '16px' }}>
+            <span style={{ fontSize: '9px', fontWeight: 'bold', letterSpacing: '1.5px', color: '#C87D12', textTransform: 'uppercase' }}>HOLISTIC WELL-BEING</span>
+            <h3 style={{ fontSize: '20px', fontWeight: '900', color: '#1B2E22', margin: '4px 0 0 0' }}>
+              Material & Spiritual Benefits
+            </h3>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <div style={{ backgroundColor: '#FFF', border: '1px solid #E2D8C3', borderRadius: '8px', padding: '16px', textAlign: 'center' }}>
+              <span style={{ fontSize: '24px', display: 'block', marginBottom: '8px' }}>🧘</span>
+              <div style={{ fontSize: '14px', fontWeight: 'bold', color: '#1B2E22', marginBottom: '4px' }}>Spiritual Protection</div>
+              <p style={{ fontSize: '11px', color: '#556B5B', margin: 0, lineHeight: '1.5', fontFamily: 'sans-serif' }}>
+                Protects from negative energy, balances throat chakra, and strengthens Krishna bhakti.
+              </p>
+            </div>
+
+            <div style={{ backgroundColor: '#FFF', border: '1px solid #E2D8C3', borderRadius: '8px', padding: '16px', textAlign: 'center' }}>
+              <span style={{ fontSize: '24px', display: 'block', marginBottom: '8px' }}>❄️</span>
+              <div style={{ fontSize: '14px', fontWeight: 'bold', color: '#1B2E22', marginBottom: '4px' }}>Body Cooling & Health</div>
+              <p style={{ fontSize: '11px', color: '#556B5B', margin: 0, lineHeight: '1.5', fontFamily: 'sans-serif' }}>
+                Natural Holy Basil wood absorbs excessive heat and promotes peace of mind.
+              </p>
+            </div>
+
+            <div style={{ backgroundColor: '#FFF', border: '1px solid #E2D8C3', borderRadius: '8px', padding: '16px', textAlign: 'center' }}>
+              <span style={{ fontSize: '24px', display: 'block', marginBottom: '8px' }}>🌊</span>
+              <div style={{ fontSize: '14px', fontWeight: 'bold', color: '#1B2E22', marginBottom: '4px' }}>Tirtha Bathing Merit</div>
+              <p style={{ fontSize: '11px', color: '#556B5B', margin: 0, lineHeight: '1.5', fontFamily: 'sans-serif' }}>
+                As stated in the Skanda Purana, bathing while wearing Tulsi offers the spiritual benefit of bathing in all holy rivers.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Product Catalog Section */}
+        <section id="catalog" style={{ padding: '28px 0', borderBottom: '1px solid #E2D8C3' }}>
+          <div style={{ marginBottom: '16px', textAlign: 'center' }}>
+            <span style={{ fontSize: '9px', fontWeight: 'bold', letterSpacing: '1.5px', color: '#C87D12', textTransform: 'uppercase' }}>SACRED CRAFTS</span>
+            <h3 style={{ fontSize: '20px', fontWeight: '900', color: '#1B2E22', margin: '4px 0 0 0' }}>
+              Sacred Tulsi Collection
+            </h3>
+            <p style={{ fontSize: '11px', color: '#556B5B', margin: '4px 0 0 0', fontFamily: 'sans-serif' }}>Authentic products with true to life photography</p>
+          </div>
+
+          <div style={{ marginBottom: '12px' }}>
+            <div style={{ fontSize: '14px', fontWeight: 'bold', color: '#C87D12', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span>📿</span> <span>1-Round Tulsi Kanthi Malas</span>
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '16px' }}>
             {products.map((product) => (
-              <div key={product.id} style={{ backgroundColor: '#FAF8F2', border: '1px solid #E3DEC3', borderRadius: '8px', padding: '16px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                <div>
-                  <h4 style={{ fontSize: '16px', fontWeight: 'bold', color: '#0F2E1B', fontFamily: 'serif', margin: '0 0 6px 0' }}>{product.name}</h4>
-                  <p style={{ fontSize: '12px', color: '#525E55', margin: '0 0 12px 0', lineHeight: '1.5' }}>{product.description}</p>
-                </div>
+              <div key={product.id} style={{ backgroundColor: '#FFF', border: '1px solid #E2D8C3', borderRadius: '12px', padding: '12px', position: 'relative' }}>
                 
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '12px', borderTop: '1px solid #E3DEC3' }}>
-                  <span style={{ fontSize: '18px', fontWeight: '900', color: '#0F2E1B', fontFamily: 'serif' }}>₹{product.price}</span>
-                  <div style={{ display: 'flex', gap: '8px' }}>
-                    <button onClick={() => addToCart(product)} style={{ backgroundColor: '#0F2E1B', color: '#F9F6EE', fontSize: '11px', fontWeight: 'bold', textTransform: 'uppercase', padding: '8px 12px', borderRadius: '4px', border: 'none', cursor: 'pointer' }}>
-                      Add To Cart
+                <button 
+                  onClick={toggleWishlist}
+                  style={{ position: 'absolute', top: '20px', left: '20px', zIndex: 5, backgroundColor: 'rgba(255,255,255,0.8)', border: 'none', borderRadius: '50%', width: '28px', height: '28px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                >
+                  <span style={{ fontSize: '12px' }}>{wishlistCount > 0 ? '❤️' : '🌺'}</span>
+                </button>
+
+                <div style={{ width: '100%', height: '220px', backgroundColor: '#F7F4EC', borderRadius: '8px', marginBottom: '12px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <img 
+                    src={product.imageUrl || "/images/tulsi-mala.jpg"} 
+                    alt={product.name}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    onError={(e) => {
+                      (e.target as HTMLElement).style.display = 'none'
+                    }}
+                  />
+                </div>
+
+                <h4 style={{ fontSize: '14px', fontWeight: 'bold', color: '#1B2E22', margin: '0 0 4px 0' }}>{product.name}</h4>
+                <p style={{ fontSize: '11px', color: '#556B5B', margin: '0 0 12px 0', lineHeight: '1.4', fontFamily: 'sans-serif' }}>{product.description}</p>
+
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '8px', borderTop: '1px solid #E2D8C3' }}>
+                  <span style={{ fontSize: '16px', fontWeight: '900', color: '#C87D12' }}>₹{product.price}</span>
+                  <div style={{ display: 'flex', gap: '6px' }}>
+                    <button onClick={() => addToCart(product)} style={{ backgroundColor: '#C87D12', color: '#FFF', fontSize: '10px', fontWeight: 'bold', textTransform: 'uppercase', padding: '8px 12px', borderRadius: '4px', border: 'none', cursor: 'pointer' }}>
+                      With Cart
                     </button>
-                    <a href={`https://wa.me/919082229021?text=${encodeURIComponent(`Hello, I would like to order: ${product.name} (₹${product.price})`)}`} target="_blank" rel="noopener noreferrer" style={{ backgroundColor: '#C27803', color: '#FFFFFF', fontSize: '11px', fontWeight: 'bold', textTransform: 'uppercase', padding: '8px 12px', borderRadius: '4px', textDecoration: 'none' }}>
-                      WhatsApp
-                    </a>
                   </div>
                 </div>
               </div>
@@ -298,25 +403,26 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
         </section>
 
         {/* Q&A Section */}
-        <section id="qa" style={{ padding: '32px 0', borderBottom: '1px solid #E3DEC3' }}>
-          <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-            <span style={{ fontSize: '10px', fontWeight: 'bold', letterSpacing: '1.5px', color: '#525E55', textTransform: 'uppercase' }}>KNOWLEDGE & GUIDANCE</span>
-            <h3 style={{ fontSize: '22px', fontWeight: '900', fontFamily: 'serif', color: '#0F2E1B', margin: '4px 0 0 0' }}>
+        <section id="qa" style={{ padding: '28px 0', borderBottom: '1px solid #E2D8C3' }}>
+          <div style={{ textAlign: 'center', marginBottom: '16px' }}>
+            <span style={{ fontSize: '9px', fontWeight: 'bold', letterSpacing: '1.5px', color: '#C87D12', textTransform: 'uppercase' }}>KNOWLEDGE & GUIDANCE</span>
+            <h3 style={{ fontSize: '20px', fontWeight: '900', color: '#1B2E22', margin: '4px 0 0 0' }}>
               Questions & Answers
             </h3>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '24px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '20px' }}>
             {qaList.map((item) => (
-              <div key={item.id} style={{ backgroundColor: '#EAE5D4', borderRadius: '6px', overflow: 'hidden', border: '1px solid #D3CBAD' }}>
+              <div key={item.id} style={{ backgroundColor: '#FFF', border: '1px solid #E2D8C3', borderRadius: '6px', overflow: 'hidden' }}>
                 <button 
                   onClick={() => setExpandedQa(expandedQa === item.id ? null : item.id)}
-                  style={{ width: '100%', textAlign: 'left', padding: '14px', backgroundColor: 'transparent', border: 'none', fontWeight: 'bold', color: '#0F2E1B', fontSize: '13px', cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+                  style={{ width: '100%', textAlign: 'left', padding: '12px', backgroundColor: 'transparent', border: 'none', fontWeight: 'bold', color: '#1B2E22', fontSize: '12px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
                 >
-                  <span>{expandedQa === item.id ? '▼' : '►'} {item.question}</span>
+                  <span style={{ color: '#C87D12' }}>{expandedQa === item.id ? '▼' : '►'}</span>
+                  <span>{item.question}</span>
                 </button>
                 {expandedQa === item.id && (
-                  <div style={{ padding: '0 14px 14px 14px', fontSize: '12px', color: '#3A453C', lineHeight: '1.5' }}>
+                  <div style={{ padding: '0 12px 12px 24px', fontSize: '11px', color: '#556B5B', lineHeight: '1.5', fontFamily: 'sans-serif' }}>
                     {item.answer}
                   </div>
                 )}
@@ -324,50 +430,50 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
             ))}
           </div>
 
-          <form onSubmit={handleAddQA} style={{ backgroundColor: '#FAF8F2', padding: '16px', borderRadius: '8px', border: '1px solid #E3DEC3' }}>
-            <h4 style={{ fontSize: '14px', fontWeight: 'bold', color: '#0F2E1B', margin: '0 0 10px 0' }}>Ask a Question / Post Answer</h4>
+          <form onSubmit={handleAddQA} style={{ backgroundColor: '#FFF', border: '1px solid #E2D8C3', padding: '14px', borderRadius: '8px' }}>
+            <h4 style={{ fontSize: '13px', fontWeight: 'bold', color: '#1B2E22', margin: '0 0 10px 0' }}>Ask a Question</h4>
             <input 
               type="text" 
               placeholder="Your Question (e.g. How to care for Tulsi Mala?)" 
               value={newQuestion}
               onChange={(e) => setNewQuestion(e.target.value)}
-              style={{ width: '100%', padding: '10px', marginBottom: '10px', borderRadius: '4px', border: '1px solid #CCCCCC', fontSize: '12px', boxSizing: 'border-box' }}
+              style={{ width: '100%', padding: '8px 10px', marginBottom: '8px', borderRadius: '4px', border: '1px solid #D1C4A9', backgroundColor: '#FDFBF7', color: '#2C3E2E', fontSize: '11px', boxSizing: 'border-box' }}
               required
             />
             <textarea 
-              placeholder="Optional: Provide an answer or experience..." 
+              placeholder="Optional detail..." 
               value={newAnswer}
               onChange={(e) => setNewAnswer(e.target.value)}
-              style={{ width: '100%', padding: '10px', marginBottom: '10px', borderRadius: '4px', border: '1px solid #CCCCCC', fontSize: '12px', boxSizing: 'border-box', height: '60px' }}
+              style={{ width: '100%', padding: '8px 10px', marginBottom: '8px', borderRadius: '4px', border: '1px solid #D1C4A9', backgroundColor: '#FDFBF7', color: '#2C3E2E', fontSize: '11px', boxSizing: 'border-box', height: '50px' }}
             />
-            <button type="submit" style={{ backgroundColor: '#0F2E1B', color: '#F9F6EE', fontWeight: 'bold', fontSize: '11px', textTransform: 'uppercase', padding: '10px 16px', borderRadius: '4px', border: 'none', cursor: 'pointer' }}>
+            <button type="submit" style={{ backgroundColor: '#C87D12', color: '#FFF', fontWeight: 'bold', fontSize: '10px', textTransform: 'uppercase', padding: '8px 14px', borderRadius: '4px', border: 'none', cursor: 'pointer' }}>
               Submit Question
             </button>
           </form>
         </section>
 
         {/* Reviews Section */}
-        <section id="reviews" style={{ padding: '32px 0', borderBottom: '1px solid #E3DEC3' }}>
-          <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-            <span style={{ fontSize: '10px', fontWeight: 'bold', letterSpacing: '1.5px', color: '#525E55', textTransform: 'uppercase' }}>DEVOTEE FEEDBACK</span>
-            <h3 style={{ fontSize: '22px', fontWeight: '900', fontFamily: 'serif', color: '#0F2E1B', margin: '4px 0 0 0' }}>
+        <section id="reviews" style={{ padding: '28px 0', borderBottom: '1px solid #E2D8C3' }}>
+          <div style={{ textAlign: 'center', marginBottom: '16px' }}>
+            <span style={{ fontSize: '9px', fontWeight: 'bold', letterSpacing: '1.5px', color: '#C87D12', textTransform: 'uppercase' }}>DEVOTEE FEEDBACK</span>
+            <h3 style={{ fontSize: '20px', fontWeight: '900', color: '#1B2E22', margin: '4px 0 0 0' }}>
               Customer Reviews
             </h3>
           </div>
 
-          <form onSubmit={handleAddReview} style={{ backgroundColor: '#FAF8F2', padding: '16px', borderRadius: '8px', border: '1px solid #E3DEC3', marginBottom: '24px' }}>
-            <h4 style={{ fontSize: '14px', fontWeight: 'bold', color: '#0F2E1B', margin: '0 0 10px 0' }}>Leave a Devotee Review</h4>
+          <form onSubmit={handleAddReview} style={{ backgroundColor: '#FFF', border: '1px solid #E2D8C3', padding: '14px', borderRadius: '8px', marginBottom: '20px' }}>
+            <h4 style={{ fontSize: '13px', fontWeight: 'bold', color: '#1B2E22', margin: '0 0 10px 0' }}>Leave a Devotee Review</h4>
             <input 
               type="text" 
               placeholder="Your Name" 
               value={revName}
               onChange={(e) => setRevName(e.target.value)}
-              style={{ width: '100%', padding: '10px', marginBottom: '10px', borderRadius: '4px', border: '1px solid #CCCCCC', fontSize: '12px', boxSizing: 'border-box' }}
+              style={{ width: '100%', padding: '8px 10px', marginBottom: '8px', borderRadius: '4px', border: '1px solid #D1C4A9', backgroundColor: '#FDFBF7', color: '#2C3E2E', fontSize: '11px', boxSizing: 'border-box' }}
               required
             />
-            <div style={{ marginBottom: '10px' }}>
-              <label style={{ fontSize: '12px', fontWeight: 'bold', color: '#0F2E1B', marginRight: '8px' }}>Rating:</label>
-              <select value={revRating} onChange={(e) => setRevRating(Number(e.target.value))} style={{ padding: '6px', borderRadius: '4px', border: '1px solid #CCCCCC', fontSize: '12px' }}>
+            <div style={{ marginBottom: '8px' }}>
+              <label style={{ fontSize: '11px', color: '#1B2E22', marginRight: '6px' }}>Rating:</label>
+              <select value={revRating} onChange={(e) => setRevRating(Number(e.target.value))} style={{ padding: '4px', borderRadius: '4px', border: '1px solid #D1C4A9', backgroundColor: '#FDFBF7', color: '#2C3E2E', fontSize: '11px' }}>
                 <option value={5}>⭐⭐⭐⭐⭐ (5/5)</option>
                 <option value={4}>⭐⭐⭐⭐ (4/5)</option>
                 <option value={3}>⭐⭐⭐ (3/5)</option>
@@ -377,33 +483,33 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
               placeholder="Write your review about the product..." 
               value={revComment}
               onChange={(e) => setRevComment(e.target.value)}
-              style={{ width: '100%', padding: '10px', marginBottom: '10px', borderRadius: '4px', border: '1px solid #CCCCCC', fontSize: '12px', boxSizing: 'border-box', height: '70px' }}
+              style={{ width: '100%', padding: '8px 10px', marginBottom: '8px', borderRadius: '4px', border: '1px solid #D1C4A9', backgroundColor: '#FDFBF7', color: '#2C3E2E', fontSize: '11px', boxSizing: 'border-box', height: '60px' }}
               required
             />
-            <div style={{ marginBottom: '12px' }}>
-              <label style={{ fontSize: '11px', fontWeight: 'bold', color: '#0F2E1B', display: 'block', marginBottom: '4px' }}>Upload Received Product Image:</label>
-              <input type="file" accept="image/*" onChange={handleImageUpload} style={{ fontSize: '11px' }} />
+            <div style={{ marginBottom: '10px' }}>
+              <label style={{ fontSize: '10px', color: '#556B5B', display: 'block', marginBottom: '4px', fontFamily: 'sans-serif' }}>Upload Received Product Image:</label>
+              <input type="file" accept="image/*" onChange={handleImageUpload} style={{ fontSize: '10px', color: '#556B5B' }} />
               {revImage && (
-                <div style={{ marginTop: '8px' }}>
-                  <img src={revImage} alt="Preview" style={{ width: '60px', height: '60px', objectFit: 'cover', borderRadius: '4px', border: '1px solid #CCCCCC' }} />
+                <div style={{ marginTop: '6px' }}>
+                  <img src={revImage} alt="Preview" style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '4px', border: '1px solid #C87D12' }} />
                 </div>
               )}
             </div>
-            <button type="submit" style={{ backgroundColor: '#0F2E1B', color: '#F9F6EE', fontWeight: 'bold', fontSize: '11px', textTransform: 'uppercase', padding: '10px 16px', borderRadius: '4px', border: 'none', cursor: 'pointer' }}>
+            <button type="submit" style={{ backgroundColor: '#C87D12', color: '#FFF', fontWeight: 'bold', fontSize: '10px', textTransform: 'uppercase', padding: '8px 14px', borderRadius: '4px', border: 'none', cursor: 'pointer' }}>
               Post Review
             </button>
           </form>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             {reviews.map((rev) => (
-              <div key={rev.id} style={{ backgroundColor: '#EAE5D4', padding: '14px', borderRadius: '6px', border: '1px solid #D3CBAD' }}>
+              <div key={rev.id} style={{ backgroundColor: '#FFF', border: '1px solid #E2D8C3', padding: '12px', borderRadius: '6px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
-                  <span style={{ fontWeight: 'bold', fontSize: '13px', color: '#0F2E1B' }}>{rev.name}</span>
-                  <span style={{ color: '#C27803', fontSize: '12px' }}>{'⭐'.repeat(rev.rating)}</span>
+                  <span style={{ fontWeight: 'bold', fontSize: '12px', color: '#1B2E22' }}>{rev.name}</span>
+                  <span style={{ color: '#C87D12', fontSize: '11px' }}>{'⭐'.repeat(rev.rating)}</span>
                 </div>
-                <p style={{ fontSize: '12px', color: '#3A453C', margin: '4px 0 8px 0', lineHeight: '1.4' }}>{rev.comment}</p>
+                <p style={{ fontSize: '11px', color: '#556B5B', margin: '4px 0 6px 0', lineHeight: '1.4', fontFamily: 'sans-serif' }}>{rev.comment}</p>
                 {rev.imageUrl && (
-                  <img src={rev.imageUrl} alt="Customer product" style={{ width: '80px', height: '80px', objectFit: 'cover', borderRadius: '4px', border: '1px solid #C27803' }} />
+                  <img src={rev.imageUrl} alt="Customer product" style={{ width: '60px', height: '60px', objectFit: 'cover', borderRadius: '4px', border: '1px solid #C87D12' }} />
                 )}
               </div>
             ))}
@@ -411,60 +517,90 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
         </section>
 
         {/* Footer */}
-        <footer id="contact" style={{ padding: '24px 0 12px 0', textAlign: 'center', fontSize: '12px', color: '#525E55' }}>
-          <p style={{ fontWeight: 'bold', color: '#0F2E1B', margin: '0 0 4px 0' }}>📍 Location: Radha Kund, Mathura (Vraja Dham)</p>
-          <p style={{ margin: '0 0 12px 0' }}>📱 WhatsApp Orders: <strong>+91 9082229021</strong></p>
+        <footer id="contact" style={{ padding: '20px 0 10px 0', textAlign: 'center', fontSize: '11px', color: '#556B5B', fontFamily: 'sans-serif' }}>
+          <p style={{ fontWeight: 'bold', color: '#1B2E22', margin: '0 0 4px 0' }}>📍 Location: Radha Kund, Mathura (Vraja Dham)</p>
+          <p style={{ margin: '0 0 8px 0' }}>📱 WhatsApp Orders: <strong>+91 9082229021</strong></p>
         </footer>
 
       </div>
 
       {/* Nav Drawer Overlay */}
       {isNavOpen && (
-        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.6)', zIndex: 100 }}>
-          <div style={{ width: '280px', height: '100%', backgroundColor: '#141815', color: '#F9F6EE', padding: '20px', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 100 }}>
+          <div style={{ width: '280px', height: '100%', backgroundColor: '#FDFBF7', color: '#2C3E2E', padding: '20px', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', borderRight: '1px solid #E2D8C3' }}>
             <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '16px', borderBottom: '1px solid #2D3830' }}>
-                <span style={{ fontWeight: 'bold', fontSize: '16px', color: '#E2D4B7' }}>🌿 Sacred Navigation</span>
-                <button onClick={() => setIsNavOpen(false)} style={{ background: 'none', border: 'none', color: '#F9F6EE', fontSize: '18px', cursor: 'pointer' }}>✕</button>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '14px', borderBottom: '1px solid #E2D8C3' }}>
+                <span style={{ fontWeight: 'bold', fontSize: '15px', color: '#1B2E22' }}>🌿 Sacred Navigation</span>
+                <button onClick={() => setIsNavOpen(false)} style={{ background: 'none', border: 'none', color: '#1B2E22', fontSize: '18px', cursor: 'pointer' }}>✕</button>
               </div>
 
-              <nav style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginTop: '20px', fontSize: '13px', fontWeight: 'bold' }}>
-                <a href="#catalog" onClick={() => setIsNavOpen(false)} style={{ color: '#E2D4B7', textDecoration: 'none' }}>🛍️ Full Catalog</a>
-                <a href="#qa" onClick={() => setIsNavOpen(false)} style={{ color: '#E2D4B7', textDecoration: 'none' }}>❓ Q&A</a>
-                <a href="#reviews" onClick={() => setIsNavOpen(false)} style={{ color: '#E2D4B7', textDecoration: 'none' }}>⭐ Customer Reviews</a>
+              <nav style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginTop: '20px', fontSize: '12px', fontWeight: 'bold' }}>
+                <a href="#scriptures" onClick={() => setIsNavOpen(false)} style={{ color: '#1B2E22', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span>📜</span> Sacred Scripture Verses (Puranas)
+                </a>
+                <a href="#benefits" onClick={() => setIsNavOpen(false)} style={{ color: '#1B2E22', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span>✨</span> Material & Spiritual Benefits
+                </a>
+                <a href="#catalog" onClick={() => setIsNavOpen(false)} style={{ color: '#1B2E22', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span>🛍️</span> Full Catalog
+                </a>
+                <div style={{ color: '#1B2E22', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><span>❤️</span> Saved Wishlist</span>
+                  <span style={{ backgroundColor: '#EBF2EE', color: '#2D4A3E', padding: '1px 6px', borderRadius: '10px', fontSize: '10px', border: '1px solid #C8DEC3' }}>{wishlistCount}</span>
+                </div>
+                <a href="#qa" onClick={() => setIsNavOpen(false)} style={{ color: '#1B2E22', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span>❓</span> Q&A (Bathing & Care)
+                </a>
+                <a href="#reviews" onClick={() => setIsNavOpen(false)} style={{ color: '#1B2E22', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span>⭐</span> Customer Reviews
+                </a>
+                <a href="#contact" onClick={() => setIsNavOpen(false)} style={{ color: '#1B2E22', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span>📞</span> Contact Us
+                </a>
               </nav>
+
+              <div style={{ marginTop: '24px', backgroundColor: '#EBF2EE', border: '1px solid #C8DEC3', borderRadius: '8px', padding: '12px' }}>
+                <div style={{ fontSize: '11px', fontWeight: 'bold', color: '#C87D12', marginBottom: '4px' }}>Sacred Origin: Radha Kund</div>
+                <p style={{ fontSize: '10px', color: '#556B5B', margin: 0, fontFamily: 'sans-serif' }}>
+                  Crafted by Vaisnava artisans at the holy banks of Radha Kund in Vraja Dham.
+                </p>
+              </div>
+            </div>
+
+            <div style={{ fontSize: '10px', color: '#2D4A3E', textAlign: 'center', borderTop: '1px solid #E2D8C3', paddingTop: '12px' }}>
+              Direct Orders via WhatsApp
             </div>
           </div>
         </div>
       )}
 
-      {/* Cart Overlay */}
+      {/* Cart Drawer */}
       {isCartOpen && (
-        <div style={{ position: 'fixed', top: 0, right: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.6)', zIndex: 100, display: 'flex', justifyContent: 'flex-end' }}>
-          <div style={{ width: '300px', height: '100%', backgroundColor: '#FAF8F2', padding: '20px', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', borderLeft: '2px solid #E3DEC3' }}>
+        <div style={{ position: 'fixed', top: 0, right: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 100, display: 'flex', justifyContent: 'flex-end' }}>
+          <div style={{ width: '300px', height: '100%', backgroundColor: '#FDFBF7', padding: '20px', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', borderLeft: '1px solid #E2D8C3' }}>
             <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '12px', borderBottom: '1px solid #E3DEC3' }}>
-                <span style={{ fontWeight: 'bold', fontSize: '16px', color: '#0F2E1B' }}>🛍️ Your Cart</span>
-                <button onClick={() => setIsCartOpen(false)} style={{ background: 'none', border: 'none', color: '#0F2E1B', fontSize: '18px', cursor: 'pointer' }}>✕</button>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '12px', borderBottom: '1px solid #E2D8C3' }}>
+                <span style={{ fontWeight: 'bold', fontSize: '15px', color: '#1B2E22' }}>🛍️ Your Cart</span>
+                <button onClick={() => setIsCartOpen(false)} style={{ background: 'none', border: 'none', color: '#1B2E22', fontSize: '18px', cursor: 'pointer' }}>✕</button>
               </div>
 
               {cart.length === 0 ? (
-                <p style={{ fontSize: '12px', color: '#525E55', marginTop: '20px', textAlign: 'center' }}>Your cart is empty.</p>
+                <p style={{ fontSize: '11px', color: '#556B5B', marginTop: '20px', textAlign: 'center', fontFamily: 'sans-serif' }}>Your cart is empty.</p>
               ) : (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '16px', maxHeight: '60vh', overflowY: 'auto' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '14px', maxHeight: '60vh', overflowY: 'auto' }}>
                   {cart.map(item => (
-                    <div key={item.id} style={{ backgroundColor: '#EAE5D4', padding: '10px', borderRadius: '6px', fontSize: '12px' }}>
-                      <div style={{ fontWeight: 'bold', color: '#0F2E1B' }}>{item.name}</div>
-                      <div style={{ color: '#C27803', fontWeight: 'bold', margin: '2px 0 6px 0' }}>₹{item.price * item.quantity}</div>
+                    <div key={item.id} style={{ backgroundColor: '#FFF', border: '1px solid #E2D8C3', padding: '10px', borderRadius: '6px', fontSize: '11px' }}>
+                      <div style={{ fontWeight: 'bold', color: '#1B2E22' }}>{item.name}</div>
+                      <div style={{ color: '#C87D12', fontWeight: 'bold', margin: '2px 0 6px 0' }}>₹{item.price * item.quantity}</div>
                       
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                          <button onClick={() => updateQuantity(item.id, -1)} style={{ padding: '2px 6px', fontWeight: 'bold', border: '1px solid #CCCCCC', backgroundColor: '#FFFFFF', borderRadius: '2px', cursor: 'pointer' }}>-</button>
+                          <button onClick={() => updateQuantity(item.id, -1)} style={{ padding: '2px 6px', fontWeight: 'bold', border: '1px solid #D1C4A9', backgroundColor: '#FDFBF7', color: '#1B2E22', borderRadius: '2px', cursor: 'pointer' }}>-</button>
                           <span>{item.quantity}</span>
-                          <button onClick={() => updateQuantity(item.id, 1)} style={{ padding: '2px 6px', fontWeight: 'bold', border: '1px solid #CCCCCC', backgroundColor: '#FFFFFF', borderRadius: '2px', cursor: 'pointer' }}>+</button>
+                          <button onClick={() => updateQuantity(item.id, 1)} style={{ padding: '2px 6px', fontWeight: 'bold', border: '1px solid #D1C4A9', backgroundColor: '#FDFBF7', color: '#1B2E22', borderRadius: '2px', cursor: 'pointer' }}>+</button>
                         </div>
 
-                        <button onClick={() => removeFromCart(item.id)} style={{ color: '#8B0000', border: 'none', background: 'none', fontSize: '11px', cursor: 'pointer' }}>Remove</button>
+                        <button onClick={() => removeFromCart(item.id)} style={{ color: '#D32F2F', border: 'none', background: 'none', fontSize: '10px', cursor: 'pointer' }}>Remove</button>
                       </div>
                     </div>
                   ))}
@@ -473,16 +609,16 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
             </div>
 
             {cart.length > 0 && (
-              <div style={{ borderTop: '1px solid #E3DEC3', paddingTop: '12px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: '900', fontSize: '16px', color: '#0F2E1B', marginBottom: '12px' }}>
+              <div style={{ borderTop: '1px solid #E2D8C3', paddingTop: '12px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: '900', fontSize: '15px', color: '#1B2E22', marginBottom: '12px' }}>
                   <span>Total:</span>
-                  <span>₹{cartTotal}</span>
+                  <span style={{ color: '#C87D12' }}>₹{cartTotal}</span>
                 </div>
                 <a 
                   href={getWhatsAppCartLink()}
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{ display: 'block', textAlign: 'center', backgroundColor: '#0F2E1B', color: '#F9F6EE', fontWeight: 'bold', fontSize: '12px', textTransform: 'uppercase', padding: '12px', borderRadius: '4px', textDecoration: 'none' }}
+                  style={{ display: 'block', textAlign: 'center', backgroundColor: '#C87D12', color: '#FFF', fontWeight: 'bold', fontSize: '11px', textTransform: 'uppercase', padding: '12px', borderRadius: '4px', textDecoration: 'none' }}
                 >
                   Checkout on WhatsApp →
                 </a>
