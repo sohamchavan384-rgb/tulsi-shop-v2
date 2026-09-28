@@ -368,7 +368,7 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
               >
                 <button 
                   onClick={() => setExpandedQa(expandedQa === item.id ? null : item.id)}
-                  style={{ width: '100%', textAlign: 'left', padding: '14px', backgroundColor: 'transparent', border: 'none', fontWeight: 'bold', color: '#0F2E1B', fontSize: '13px', cursor: 'pointer', display: 'flex', justifyBetween: 'space-between', alignItems: 'center' }}
+                  style={{ width: '100%', textAlign: 'left', padding: '14px', backgroundColor: 'transparent', border: 'none', fontWeight: 'bold', color: '#0F2E1B', fontSize: '13px', cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
                 >
                   <span>{expandedQa === item.id ? '▼' : '►'} {item.question}</span>
                 </button>
@@ -477,7 +477,7 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {reviews.map((rev) => (
               <div key={rev.id} style={{ backgroundColor: '#EAE5D4', padding: '14px', borderRadius: '6px', border: '1px solid #D3CBAD' }}>
-                <div style={{ display: 'flex', justifyBetween: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
                   <span style={{ fontWeight: 'bold', fontSize: '13px', color: '#0F2E1B' }}>{rev.name}</span>
                   <span style={{ color: '#C27803', fontSize: '12px' }}>{'⭐'.repeat(rev.rating)}</span>
                 </div>
@@ -502,7 +502,7 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
       {/* Side Navigation Drawer Overlay */}
       {isNavOpen && (
         <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.6)', zIndex: 100 }}>
-          <div style={{ width: '280px', height: '100%', backgroundColor: '#141815', color: '#F9F6EE', padding: '20px', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', justifyBetween: 'space-between' }}>
+          <div style={{ width: '280px', height: '100%', backgroundColor: '#141815', color: '#F9F6EE', padding: '20px', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '16px', borderBottom: '1px solid #2D3830' }}>
                 <span style={{ fontWeight: 'bold', fontSize: '16px', color: '#E2D4B7' }}>🌿 Sacred Navigation</span>
@@ -535,7 +535,7 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
       {/* Cart Drawer Overlay */}
       {isCartOpen && (
         <div style={{ position: 'fixed', top: 0, right: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.6)', zIndex: 100, display: 'flex', justifyContent: 'flex-end' }}>
-          <div style={{ width: '300px', height: '100%', backgroundColor: '#FAF8F2', padding: '20px', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', justifyBetween: 'space-between', borderLeft: '2px solid #E3DEC3' }}>
+          <div style={{ width: '300px', height: '100%', backgroundColor: '#FAF8F2', padding: '20px', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', borderLeft: '2px solid #E3DEC3' }}>
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '12px', borderBottom: '1px solid #E3DEC3' }}>
                 <span style={{ fontWeight: 'bold', fontSize: '16px', color: '#0F2E1B' }}>🛍️ Your Cart</span>
