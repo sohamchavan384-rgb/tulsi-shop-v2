@@ -1,1 +1,0 @@
-{"version":3,"file":"stringifyStream.js","sourceRoot":"","sources":["../src/stringifyStream.ts"],"names":[],"mappings":"AAEA,OAAO,EAAC,UAAU,EAAC,MAAM,yBAAyB,CAAA;AAElD,MAAM,UAAU,eAAe;IAC7B,OAAO,UAAU,CAAC,CAAC,GAAY,EAAE,IAAI,EAAE,QAAQ,EAAE,EAAE,CAAC,QAAQ,CAAC,IAAI,EAAE,GAAG,IAAI,CAAC,SAAS,CAAC,GAAG,CAAC,IAAI,CAAC,CAAC,CAAA;AACjG,CAAC"}

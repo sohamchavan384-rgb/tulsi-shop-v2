@@ -1,1 +1,0 @@
-{"version":3,"file":"index.js","sources":["../src/index.ts"],"sourcesContent":["const BASE_URL = 'https://www.sanity.io/docs/help/'\n\nexport function generateHelpUrl<const Slug extends string>(slug: Slug): `${typeof BASE_URL}${Slug}` {\n  return `${BASE_URL}${slug}`\n}\n\n"],"names":[],"mappings":"AAAA,MAAM,WAAW;AAEV,SAAS,gBAA2C,MAAyC;AAClG,SAAO,GAAG,QAAQ,GAAG,IAAI;AAC3B;"}

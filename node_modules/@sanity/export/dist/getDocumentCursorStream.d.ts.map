@@ -1,1 +1,0 @@
-{"version":3,"file":"getDocumentCursorStream.d.ts","sourceRoot":"","sources":["../src/getDocumentCursorStream.ts"],"names":[],"mappings":"AAAA,OAAO,EAAC,SAAS,EAAyB,MAAM,aAAa,CAAA;AAK7D,OAAO,KAAK,EAAC,uBAAuB,EAAiB,MAAM,YAAY,CAAA;AAWvE,wBAAsB,uBAAuB,CAC3C,OAAO,EAAE,uBAAuB,GAC/B,OAAO,CAAC,SAAS,CAAC,CA8DpB"}
