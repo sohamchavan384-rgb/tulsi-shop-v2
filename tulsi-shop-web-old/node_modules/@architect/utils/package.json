@@ -1,0 +1,29 @@
+{
+  "name": "@architect/utils",
+  "version": "6.0.3",
+  "description": "Common utility functions",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/architect/utils.git"
+  },
+  "scripts": {
+    "test": "npm run lint && node --test 'test/**/*-test.js'",
+    "lint": "npx eslint . --fix",
+    "rc": "npm version prerelease --preid RC"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "author": "Brian LeRoux <b@brian.io>",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@aws-lite/client": "^0.23.2",
+    "lambda-runtimes": "3.0.0"
+  },
+  "devDependencies": {
+    "@architect/eslint-config": "~3.0.0",
+    "@architect/inventory": "6.0.0",
+    "eslint": "9.39.1"
+  }
+}

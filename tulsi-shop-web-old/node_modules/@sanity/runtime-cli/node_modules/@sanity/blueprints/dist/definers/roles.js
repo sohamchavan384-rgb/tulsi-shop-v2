@@ -1,0 +1,144 @@
+import { referenceResource, validateProjectRole, validateRole, } from '../index.js';
+import { runValidation } from '../utils/validation.js';
+/*
+ * FUTURE example (move below @example when ready)
+ * @example All options
+ * ```ts
+ * defineRole({
+ *   name: 'ci-deploy-role',
+ *   title: 'CI Deploy Role',
+ *   description: 'Permissions for CI/CD pipelines to manage CORS and datasets',
+ *   appliesToRobots: true,
+ *   appliesToUsers: false,
+ *   permissions: [{
+ *     name: 'sanity-project-cors',
+ *     action: 'create',
+ *   }, {
+ *     name: 'sanity-project-cors',
+ *     action: 'read',
+ *   }, {
+ *     name: 'sanity-project-cors',
+ *     action: 'delete',
+ *   }],
+ * })
+ * ```
+ */
+/**
+ * Defines a role that is scoped to the same resource as the blueprint.
+ *
+ * ```ts
+ * defineRole({
+ *   name: 'custom-robot-role',
+ *   title: 'Custom Robot Role',
+ *   appliesToRobots: true,
+ *   permissions: [{
+ *     name: 'sanity-project-cors',
+ *     action: 'create',
+ *   }],
+ * })
+ * ```
+ * @param parameters The configuration of the role
+ * @public
+ * @beta Deploying Roles via Blueprints is experimental. This feature is stabilizing but may still be subject to breaking changes.
+ * @category Definers
+ * @expandType BlueprintRoleConfig
+ * @returns The role resource
+ */
+export function defineRole(parameters, options) {
+    const roleResource = {
+        name: parameters.name,
+        type: 'sanity.access.role',
+        title: parameters.title,
+        description: parameters.description,
+        appliesToUsers: parameters.appliesToUsers,
+        appliesToRobots: parameters.appliesToRobots,
+        permissions: parameters.permissions,
+    };
+    if (parameters.lifecycle) {
+        roleResource.lifecycle = parameters.lifecycle;
+    }
+    if (options?.skipValidation !== true)
+        runValidation(() => validateRole(roleResource));
+    return roleResource;
+}
+/*
+ * FUTURE example (move below @example when ready)
+ * @example Cross-resource references
+ * ```ts
+ * const role = defineProjectRole(projectId, {
+ *   name: 'ci-deploy-role',
+ *   title: 'CI Deploy Role',
+ *   appliesToRobots: true,
+ *   permissions: [{
+ *     name: 'sanity-project-cors',
+ *     action: 'create',
+ *   }, {
+ *     name: 'sanity-project-cors',
+ *     action: 'delete',
+ *   }],
+ * })
+ *
+ * defineRobotToken({
+ *   name: 'ci-robot',
+ *   memberships: [{
+ *     resourceType: 'project',
+ *     resourceId: projectId,
+ *     roleNames: ['$.resources.ci-deploy-role'],
+ *   }],
+ * })
+ * ```
+ */
+/**
+ * Defines a role that is scoped to the specified project.
+ *
+ * ```ts
+ * defineProjectRole(projectId, {
+ *   name: 'viewer-role',
+ *   title: 'Viewer',
+ *   appliesToUsers: true,
+ *   permissions: [{
+ *     name: 'sanity-project-cors',
+ *     action: 'read',
+ *   }],
+ * })
+ * ```
+ * @public
+ * @beta Deploying Roles via Blueprints is experimental. This feature is stabilizing but may still be subject to breaking changes.
+ * @hidden
+ * @category Definers
+ * @expandType BlueprintRoleConfig
+ * @param projectId The ID of the project to which the role will be scoped
+ * @param parameters The configuration of the role
+ * @returns The role resource
+ */
+export function defineProjectRole(projectId, parameters) {
+    const roleResource = defineRole(parameters, { skipValidation: true });
+    const projectRoleResource = {
+        ...roleResource,
+        resourceType: 'project',
+        resourceId: projectId,
+    };
+    runValidation(() => validateProjectRole(projectRoleResource));
+    return projectRoleResource;
+}
+/**
+ * Creates a reference to a role in another stack.
+ *
+ * ```ts
+ * referenceRole({
+ *   name: 'editor-role',
+ *   stack: 'editorial',
+ * })
+ * ```
+ *
+ * @public
+ * @beta Referencing Roles via Blueprints is experimental. This feature is stabilizing but may still be subject to breaking changes.
+ * @category Referencers
+ * @expandType BlueprintCrossStackReferenceConfig
+ * @param params The parameters for referencing the role
+ * @returns The role reference
+ */
+export function referenceRole({ name, stack, localName }) {
+    return referenceResource({ name, stack, localName, type: 'sanity.access.role' });
+}
+//# sourceMappingURL=roles.js.map

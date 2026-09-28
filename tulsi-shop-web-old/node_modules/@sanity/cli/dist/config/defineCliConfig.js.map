@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../src/config/defineCliConfig.ts"],"sourcesContent":["import {type CliConfig} from '@sanity/cli-core'\n\n/** @beta */\nexport function defineCliConfig(config: CliConfig): CliConfig {\n  return config\n}\n"],"names":["defineCliConfig","config"],"mappings":"AAEA,UAAU,GACV,OAAO,SAASA,gBAAgBC,MAAiB;IAC/C,OAAOA;AACT"}

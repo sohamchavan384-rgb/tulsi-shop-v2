@@ -1,0 +1,13 @@
+export declare function check(str: string): string;
+export declare function info(str: string): string;
+export declare function warn(str: string): string;
+export declare function advise(str: string): string;
+export declare function unsure(str: string): string;
+export declare function severe(str: string): string;
+export declare function niceId(id: string | undefined): string;
+export declare function indent(str: string, spaces?: number): string;
+export declare function capitalize(str: string): string;
+export declare function filePathRelativeToCwd(filePath: string): string;
+export declare function labeledId(label: string | undefined, id: string | undefined): string;
+export type Row = [label: string, value: string];
+export declare function renderSection(title: string, rows: Row[]): string;

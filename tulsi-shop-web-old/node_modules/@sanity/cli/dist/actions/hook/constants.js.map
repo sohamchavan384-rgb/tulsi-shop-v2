@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/actions/hook/constants.ts"],"sourcesContent":["export const HOOK_API_VERSION = 'v2025-08-04'\n"],"names":["HOOK_API_VERSION"],"mappings":"AAAA,OAAO,MAAMA,mBAAmB,cAAa"}

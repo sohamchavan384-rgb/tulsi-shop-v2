@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../../src/util/packageManager/installationInfo/index.ts"],"sourcesContent":["// Main entry point\nexport {detectCliInstallation} from './detectCliInstallation.js'\n"],"names":["detectCliInstallation"],"mappings":"AAAA,mBAAmB;AACnB,SAAQA,qBAAqB,QAAO,6BAA4B"}

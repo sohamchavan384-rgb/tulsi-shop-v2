@@ -1,0 +1,94 @@
+{
+  "name": "@sanity/generate-help-url",
+  "version": "4.0.0",
+  "description": "Generates URLs to specific sections of the Sanity documentation",
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "exports": {
+    ".": {
+      "source": "./src/index.ts",
+      "require": "./dist/index.cjs",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "lint": "eslint . && tsc --noEmit",
+    "prepublishOnly": "npm run build && npm run lint",
+    "build": "pkg build --strict --check --clean",
+    "test": "node --test --conditions source",
+    "prettify": "prettier --write src/**/*.ts src/**/*.tsx test/**/*.ts test/**/*.tsx",
+    "prettify-check": "prettier --check src/**/*.ts src/**/*.tsx test/**/*.ts test/**/*.tsx"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/sanity-io/generate-help-url.git"
+  },
+  "keywords": [
+    "sanity",
+    "cms",
+    "headless",
+    "realtime",
+    "content",
+    "generate-help-url"
+  ],
+  "author": "Sanity.io <hello@sanity.io>",
+  "license": "MIT",
+  "devDependencies": {
+    "@sanity/pkg-utils": "^10.2.6",
+    "@sanity/semantic-release-preset": "^5.0.0",
+    "@sanity/tsconfig": "^2.1.0",
+    "@types/node": "^25.0.3",
+    "@typescript-eslint/eslint-plugin": "^5.7.0",
+    "@typescript-eslint/parser": "^5.7.0",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-sanity": "^5.1.0",
+    "prettier": "^2.5.1",
+    "semantic-release": "^24.2.7",
+    "typescript": "5.9.3"
+  },
+  "bugs": {
+    "url": "https://github.com/sanity-io/generate-help-url/issues"
+  },
+  "homepage": "https://github.com/sanity-io/generate-help-url#readme",
+  "prettier": {
+    "semi": false,
+    "printWidth": 100,
+    "bracketSpacing": false,
+    "singleQuote": true
+  },
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "require": "./dist/index.cjs",
+        "default": "./dist/index.js"
+      },
+      "./package.json": "./package.json"
+    }
+  },
+  "eslintConfig": {
+    "parserOptions": {
+      "ecmaVersion": 9,
+      "sourceType": "module",
+      "ecmaFeatures": {
+        "modules": true
+      }
+    },
+    "extends": [
+      "sanity",
+      "sanity/typescript",
+      "prettier"
+    ],
+    "ignorePatterns": [
+      "lib/**/"
+    ]
+  },
+  "packageManager": "pnpm@10.16.1"
+}

@@ -1,0 +1,72 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import { generateWebManifest } from '../generateWebManifest.js';
+const mimeTypes = {
+    '.ico': 'image/x-icon',
+    '.png': 'image/png',
+    '.svg': 'image/svg+xml'
+};
+/**
+ * Fallback favicons plugin for Sanity.
+ *
+ * If a favicon is not found in the static folder, this plugin will serve the default
+ * Sanity favicons from the npm bundle. If a custom `favicon.ico` is found in the static
+ * folder, it will also be served for a root `/favicon.ico` request.
+ *
+ * @param options - Options for the plugin
+ * @returns A Vite plugin
+ * @internal
+ */ export function sanityFaviconsPlugin({ customFaviconsPath, defaultFaviconsPath, staticUrlPath }) {
+    const cache = {};
+    async function getFavicons() {
+        if (cache.favicons) {
+            return cache.favicons;
+        }
+        cache.favicons = await fs.readdir(defaultFaviconsPath);
+        return cache.favicons;
+    }
+    async function hasCustomFavicon(fileName) {
+        try {
+            await fs.access(path.join(customFaviconsPath, fileName));
+            return true;
+        } catch  {
+            return false;
+        }
+    }
+    return {
+        apply: 'serve',
+        configureServer (viteDevServer) {
+            const webManifest = JSON.stringify(generateWebManifest(staticUrlPath), null, 2);
+            const webManifestPath = `${staticUrlPath}/manifest.webmanifest`;
+            viteDevServer.middlewares.use(async (req, res, next)=>{
+                if (req.url?.endsWith(webManifestPath)) {
+                    res.writeHead(200, 'OK', {
+                        'content-type': 'application/manifest+json'
+                    });
+                    res.write(webManifest);
+                    res.end();
+                    return;
+                }
+                const parsedUrl = typeof req === 'object' && req !== null && '_parsedUrl' in req && req._parsedUrl instanceof URL ? req._parsedUrl : new URL(req.url || '/', 'http://localhost:3333');
+                const pathName = parsedUrl.pathname || '';
+                const fileName = path.basename(pathName || '');
+                const icons = await getFavicons();
+                const isIconRequest = pathName.startsWith('/favicon.ico') || icons.includes(fileName) && pathName.includes(staticUrlPath);
+                if (!isIconRequest) {
+                    next();
+                    return;
+                }
+                const faviconPath = await hasCustomFavicon(fileName) ? path.join(customFaviconsPath, fileName) : path.join(defaultFaviconsPath, fileName);
+                const mimeType = mimeTypes[path.extname(fileName)] || 'application/octet-stream';
+                res.writeHead(200, 'OK', {
+                    'content-type': mimeType
+                });
+                res.write(await fs.readFile(faviconPath));
+                res.end();
+            });
+        },
+        name: 'sanity/server/sanity-favicons'
+    };
+}
+
+//# sourceMappingURL=plugin-sanity-favicons.js.map

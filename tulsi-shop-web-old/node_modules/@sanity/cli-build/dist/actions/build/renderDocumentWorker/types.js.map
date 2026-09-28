@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../../src/actions/build/renderDocumentWorker/types.ts"],"sourcesContent":["/**\n * @internal\n */\nexport interface DocumentProps {\n  basePath: string\n\n  css?: string[]\n  entryPath?: string\n  title?: string\n}\n"],"names":[],"mappings":"AAAA;;CAEC,GACD,WAMC"}

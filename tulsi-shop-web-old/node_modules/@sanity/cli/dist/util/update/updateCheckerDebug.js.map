@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/util/update/updateCheckerDebug.ts"],"sourcesContent":["import {subdebug} from '@sanity/cli-core'\n\nexport const updateCheckerDebug = subdebug('updateChecker')\n"],"names":["subdebug","updateCheckerDebug"],"mappings":"AAAA,SAAQA,QAAQ,QAAO,mBAAkB;AAEzC,OAAO,MAAMC,qBAAqBD,SAAS,iBAAgB"}

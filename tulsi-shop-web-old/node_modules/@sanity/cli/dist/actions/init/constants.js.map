@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/actions/init/constants.ts"],"sourcesContent":["export const INIT_API_VERSION = 'v2025-06-01'\n"],"names":["INIT_API_VERSION"],"mappings":"AAAA,OAAO,MAAMA,mBAAmB,cAAa"}

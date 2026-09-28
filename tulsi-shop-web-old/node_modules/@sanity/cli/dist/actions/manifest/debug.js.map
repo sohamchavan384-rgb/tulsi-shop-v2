@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/actions/manifest/debug.ts"],"sourcesContent":["import {subdebug} from '@sanity/cli-core'\n\nexport const manifestDebug = subdebug('manifest')\n"],"names":["subdebug","manifestDebug"],"mappings":"AAAA,SAAQA,QAAQ,QAAO,mBAAkB;AAEzC,OAAO,MAAMC,gBAAgBD,SAAS,YAAW"}

@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/actions/preview/types.ts"],"sourcesContent":["import {type PreviewCommand} from '../../commands/preview.js'\n\nexport type PreviewFlags = PreviewCommand['flags']\n"],"names":[],"mappings":"AAEA,WAAkD"}

@@ -1,0 +1,46 @@
+import path from 'node:path';
+import { readPackageJson } from '@sanity/cli-core';
+import { spinner } from '@sanity/cli-core/ux';
+import promiseProps from 'promise-props-recursive';
+import { compare, minVersion } from 'semver';
+import { getCliVersion } from '../../util/getCliVersion.js';
+import { buildPackageArray } from './buildPackageArray.js';
+import { filterSanityModules } from './filterSanityModules.js';
+import { versionsDebug } from './versionsDebug.js';
+/**
+ * Print the versions of the all sanity and `@sanity/*` packages.
+ *
+ * @internal
+ */ export async function findSanityModulesVersions(args) {
+    const { cwd } = args;
+    const cliVersion = await getCliVersion();
+    versionsDebug(`Sanity CLI version: ${cliVersion}`);
+    const packageJsonPath = path.join(cwd, 'package.json');
+    versionsDebug(`Reading package.json from ${packageJsonPath}`);
+    // Declared @sanity/* modules and their wanted versions in package.json
+    const packageJson = await readPackageJson(packageJsonPath);
+    versionsDebug('Resolved package.json:', packageJson);
+    const filteredSanityModules = filterSanityModules(packageJson);
+    versionsDebug('sanity modules:', filteredSanityModules);
+    const spin = spinner('Resolving latest versions').start();
+    try {
+        const versions = await promiseProps(buildPackageArray(filteredSanityModules, cwd, cliVersion));
+        const packages = Object.values(versions);
+        versionsDebug('packages:', packages);
+        return packages.map((mod)=>{
+            const current = mod.installed || minVersion(mod.declared)?.toString() || '';
+            const needsUpdate = mod.latest ? compare(current, mod.latest) === -1 : false;
+            return {
+                ...mod,
+                needsUpdate
+            };
+        });
+    } catch (error) {
+        versionsDebug('Error finding sanity modules versions:', error);
+        throw error;
+    } finally{
+        spin.stop();
+    }
+}
+
+//# sourceMappingURL=findSanityModulesVersions.js.map

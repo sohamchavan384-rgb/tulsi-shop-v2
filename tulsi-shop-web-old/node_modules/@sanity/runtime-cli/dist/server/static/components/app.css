@@ -1,0 +1,629 @@
+/* ==========================================================================
+   SANITY UI - CSS DESIGN VARIABLES
+   ==========================================================================
+
+   This file provides the core Sanity UI design language as CSS Custom Properties
+   (Variables) for direct consumption in CSS stylesheets or inline styles.
+
+   - Supports light and dark color schemes via `prefers-color-scheme`.
+   - Uses numerical scales for spacing, radius, font sizes, line heights,
+     and shadows where applicable for ergonomic adjustment.
+   - Provides semantic color variables for common UI roles (text, surface,
+     border, interactive states, etc.) mapped to the underlying palette.
+   - Includes typography, transitions, and layout constants.
+
+   --------------------------------------------------------------------------
+   Table of Contents
+   --------------------------------------------------------------------------
+   1.  SETUP & BASE
+   2.  RAW COLOR PALETTE
+   3.  SEMANTIC COLORS (LIGHT & DARK MODE)
+   -------------------------------------------------------------------------- */
+
+/* ==========================================================================
+   1. SETUP & BASE
+   ========================================================================== */
+
+:root {
+  /* Enables system-level light/dark mode detection */
+  color-scheme: light dark;
+
+  /* Default to light mode colors (overridden later in dark mode) */
+  --base-color: var(--black);
+  --base-background-color: var(--white);
+
+  /* Default text rendering settings */
+  color: var(--base-color);
+  background-color: var(--base-background-color);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: var(--sans);
+
+  /* Gutter Gradient Variables */
+}
+
+/* ==========================================================================
+   2. RAW COLOR PALETTE
+   ==========================================================================
+
+   Provided by @sanity-labs/design-tokens via ./vendor/design-tokens/index.css
+   (linked in index.html before this file). Variables: --black, --white,
+   --<hue>-<50..950> for blue, cyan, gray, green, magenta, orange, purple,
+   red, yellow.
+*/
+
+/* ==========================================================================
+   3. SEMANTIC COLORS (LIGHT & DARK MODE)
+   ==========================================================================
+
+   Purpose-driven color variables mapped to the raw palette.
+
+   Naming: --color-<role>-<element?>-<state?>
+   Example: --color-text-default, --color-surface-primary-hover, --color-border-critical
+*/
+
+:root {
+  /* Semantic Colors: LIGHT MODE */
+  --color-surface-subtle: var(--gray-100);
+  --color-border-default: var(--gray-200);
+  --color-interactive-primary-active-bg: var(--blue-700); /* used by toggle-switch.js */
+}
+
+/* Semantic Colors: DARK MODE */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --base-color: var(--white);
+    --base-background-color: var(--gray-950);
+    --color-surface-subtle: var(--gray-800);
+    --color-border-default: var(--gray-800);
+    --color-interactive-primary-active-bg: var(--blue-400);
+  }
+}
+
+:root {
+  --card-border-color: light-dark(var(--gray-200), var(--gray-800));
+  --text-color: light-dark(#242736, #e3e4e8);
+  --button-primary-bg-hover: light-dark(#1c1f28, #888888);
+}
+
+html {
+  color-scheme: light dark;
+  min-height: 100dvh;
+  max-height: 100dvh;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--sans);
+  color: var(--text-color) !important;
+  min-height: 100dvh;
+  max-height: 100dvh;
+  height: 100%;
+  overflow: hidden;
+  display: grid;
+  grid-template-areas:
+    'header'
+    'filters'
+    'left-sidebar'
+    'main'
+    'footer';
+
+  grid-template-rows: min-content min-content min-content 1fr min-content;
+}
+
+/* Utilities */
+.capitalize {
+  text-transform: capitalize;
+}
+.items-center {
+  align-items: center;
+}
+.space-between {
+  justify-content: space-between;
+}
+.flex-end {
+  justify-content: flex-end;
+}
+
+.sticky {
+  position: sticky;
+}
+.relative {
+  position: relative;
+}
+
+.top-0 {
+  top: 0;
+}
+.right-0 {
+  right: 0;
+}
+.left-0 {
+  left: 0;
+}
+
+.z-10 {
+  z-index: 10;
+}
+.z-32 {
+  z-index: 32;
+}
+.z-100 {
+  z-index: 100;
+}
+.w-100 {
+  width: 100%;
+}
+.h-100 {
+  height: 100%;
+}
+.max-h-100 {
+  max-height: 100%;
+}
+.min-h-0 {
+  min-height: 0;
+}
+.y-scroll {
+  overflow-y: scroll;
+}
+
+.border-color {
+  border-color: var(--card-border-color);
+}
+.border-left {
+  border-left-width: 1px;
+  border-left-style: solid;
+  border-left-color: var(--card-border-color);
+}
+.border-bottom {
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: var(--card-border-color);
+}
+.border-top {
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: var(--card-border-color);
+}
+.border-right {
+  border-right-width: 1px;
+  border-right-style: solid;
+  border-top-color: var(--card-border-color);
+}
+
+.hr-border {
+  margin-top: 0;
+  margin-bottom: 0;
+  height: 0;
+  border-top: 0;
+  border-bottom: 1px solid light-dark(var(--gray-200), var(--gray-800));
+}
+
+/* Layout */
+header {
+  grid-area: header;
+}
+nav {
+  grid-area: left-sidebar;
+}
+main {
+  grid-area: main;
+  /* Ensure main takes up available space if body is grid/flex */
+  overflow: hidden; /* Prevent main itself from scrolling */
+  min-height: 0; /* Needed for grid children height */
+}
+footer {
+  grid-area: footer;
+}
+
+/* Apply grid styles to main#main-content */
+#main-content {
+  display: grid;
+  grid-template-areas:
+    'payload response'
+    'console console';
+  grid-template-columns: 1fr 1fr;
+  /* Let console height be flexible based on content, up to a max */
+  grid-template-rows: 1fr 1fr;
+  /* Ensure grid takes full height of its container (main) */
+  height: 100%;
+  max-height: 100%;
+  min-height: 0; /* Important for nested overflow/height */
+}
+
+@media (max-width: 40rem) {
+  /* Mobile layout: stack elements vertically */
+  #main-content {
+    grid-template-areas:
+      'payload'
+      'response'
+      'console';
+    grid-template-columns: 1fr;
+    /* Adjust row heights for mobile, maybe allow content to determine height */
+    grid-template-rows: auto auto auto;
+    height: auto; /* Allow main content to scroll if needed */
+    max-height: none;
+    overflow-y: auto; /* Allow scrolling for the whole main area */
+  }
+
+  .block-lg {
+    display: block !important;
+  }
+
+  .hidden-lg {
+    display: none;
+  }
+}
+
+@media (min-width: 40em) {
+  body {
+    grid-template:
+      'header             header' min-content
+      'filters            filters' min-content
+      'left-sidebar       main  ' 1fr
+      'footer             footer' min-content
+      / minmax(auto, 320px) 1fr;
+  }
+  .border-top-none-l {
+    border-top: 0;
+  }
+}
+
+header {
+  border-bottom: 1px solid var(--card-border-color);
+  background: light-dark(white, var(--gray-950));
+}
+
+footer {
+  border-top: 1px solid var(--card-border-color);
+}
+
+.logo-image {
+  height: 25px;
+  width: 25px;
+}
+
+.logo-image img {
+  width: 100%;
+  height: 100%;
+}
+
+.logo-text {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: var(--medium);
+  margin: 0px;
+  letter-spacing: 0px;
+}
+
+.sanity-button {
+  appearance: none;
+  -webkit-appearance: none;
+  display: flex;
+  gap: 6px;
+  background-color: light-dark(var(--gray-900), white) !important;
+  color: light-dark(white, var(--gray-950)) !important;
+  border: 0 !important;
+  border-radius: var(--radius-2) !important;
+  outline: 0;
+  font-size: 14px !important;
+  line-height: 1 !important;
+  padding: 0 var(--space-3) !important;
+  height: 24px !important;
+  max-width: 160px;
+}
+
+.sanity-button:hover {
+  background-color: var(--button-primary-bg-hover) !important;
+}
+
+.config-label {
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: var(--medium);
+  letter-spacing: 0.5px;
+}
+
+.config-label span {
+  display: block;
+  margin-bottom: var(--space-2);
+}
+
+.function-list-item {
+  font-size: 0.875rem;
+  border-radius: var(--radius-2);
+  margin: 0 0 1px 0;
+  cursor: pointer;
+}
+
+.function-list-item-label {
+  color: light-dark(var(--gray-800), var(--gray-400));
+  font-weight: var(--semibold);
+  padding-bottom: var(--m-space-1);
+}
+
+.function-list-item-type {
+  color: light-dark(var(--gray-900), var(--gray-300));
+}
+
+.dropdown-select {
+  background: transparent;
+  color: light-dark(var(--gray-950), var(--gray-300));
+}
+
+ol[type='content'] li:hover:not(.selected:not(.selected)) {
+  color: light-dark(var(--gray-950), var(--gray-200));
+  background-color: light-dark(var(--gray-50), var(--gray-900));
+}
+
+.selected:hover,
+.selected {
+  color: light-dark(var(--gray-950), var(--gray-200));
+  background-color: light-dark(var(--gray-100), var(--gray-800)) !important;
+}
+
+:is(ol)[type='content'] {
+  & > li:not(:last-of-type) {
+    border-bottom: 0 !important;
+  }
+}
+
+#payload {
+  height: 100%;
+}
+
+#response {
+  height: 100%;
+}
+
+.gutter-gradient {
+  --gutter-width: 30px;
+  --gutter-border-width: 1px;
+
+  /* Light mode default gradient */
+  background-image: linear-gradient(to right, var(--gray-50) var(--gutter-width), var(--gray-100) var(--gutter-width), var(--gray-100) calc(var(--gutter-width) + var(--gutter-border-width)), transparent calc(var(--gutter-width) + var(--gutter-border-width)));
+}
+
+/* Apply dark mode gradient override */
+@media (prefers-color-scheme: dark) {
+  .gutter-gradient {
+    background-image: linear-gradient(to right, var(--gray-900) var(--gutter-width), var(--gray-800) var(--gutter-width), var(--gray-800) calc(var(--gutter-width) + var(--gutter-border-width)), transparent calc(var(--gutter-width) + var(--gutter-border-width)));
+  }
+  /* Add other dark-mode specific overrides here if needed */
+}
+
+.bg {
+  background-color: light-dark(white, var(--gray-950));
+}
+
+.cm-editor {
+  background-color: transparent;
+}
+
+.cm-cursor.cm-cursor {
+  border-left-color: light-dark(var(--blue-600), var(--blue-400));
+}
+
+.cm-gutters.cm-gutters {
+  background-color: transparent;
+  color: light-dark(var(--gray-800), var(--gray-500));
+  border-right: none;
+}
+
+& :is(input:not([is='switch']), select, textarea) {
+  border: 1px solid light-dark(var(--gray-200), var(--gray-800)) !important;
+  border-radius: var(--radius-2);
+}
+
+.cm-activeLine.cm-activeLine {
+  background-color: light-dark(rgba(0, 0, 0, 0.05), rgba(255, 255, 255, 0.025)) !important;
+}
+
+.cm-activeLineGutter.cm-activeLineGutter {
+  background-color: light-dark(rgba(0, 0, 0, 0.025), rgba(255, 255, 255, 0.1)) !important;
+}
+
+.slab-stat,
+.slab-text {
+  font-family: var(--mono);
+  font-size: 13px;
+}
+
+.slab-stat {
+  gap: 0 8px;
+}
+
+.slab-stat dt {
+  font-weight: var(--regular);
+  text-transform: none;
+  margin: 0;
+  padding: 0;
+}
+
+.slab-stat dd {
+  font-weight: var(--bold);
+  text-transform: none;
+  margin: 0;
+  padding: 0;
+}
+
+pre {
+  color: var(--base-text-color) !important;
+  background-color: transparent !important;
+}
+
+time {
+  font-family: var(--mono);
+}
+
+/* Default sidebar */
+#sidebar {
+  transition:
+    width 0.3s ease-in-out,
+    min-width 0.3s ease-in-out;
+}
+
+/* Navigation collapse functionality */
+#nav-toggle:checked ~ #sidebar {
+  width: 40px !important;
+  min-width: 40px !important;
+}
+
+#nav-toggle ~ #sidebar h4,
+#nav-toggle ~ #sidebar function-list {
+  opacity: 1;
+  transition: opacity 0.3s ease-in 0.1s;
+  pointer-events: auto;
+}
+
+#nav-toggle:checked ~ #sidebar h4,
+#nav-toggle:checked ~ #sidebar function-list {
+  opacity: 0;
+  transition: opacity 0.2s ease-out;
+  pointer-events: none;
+}
+
+/* Ensure toggle button stays visible during animations */
+#sidebar #nav-toggle-label {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Dynamic icons based on state */
+#nav-toggle-label::before {
+  content: '‹'; /* Left-pointing angle when expanded (click to collapse) */
+  font-size: 16px;
+  font-weight: bold;
+  transition: transform 0.2s ease-in-out;
+  display: inline-block;
+}
+
+#nav-toggle:checked ~ #sidebar #nav-toggle-label::before {
+  transform: rotate(180deg);
+}
+
+/* Add transitions to body grid layout */
+body {
+  transition: grid-template-columns 0.3s ease-in-out;
+}
+
+/* Adjust body grid when nav is collapsed - use :has() selector */
+body:has(#nav-toggle:checked) {
+  grid-template-columns: 40px 1fr !important;
+}
+
+@media (min-width: 40em) {
+  body {
+    transition: grid-template 0.3s ease-in-out;
+  }
+
+  body:has(#nav-toggle:checked) {
+    grid-template:
+      'header             header' min-content
+      'filters            filters' min-content
+      'left-sidebar       main  ' 1fr
+      'footer             footer' min-content
+      / 40px 1fr !important;
+  }
+}
+
+.bg-base {
+  background-color: var(--base-background-color);
+}
+
+.pre-wrap {
+  white-space: pre-wrap;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.break-word {
+  word-wrap: break-word;
+}
+
+.block {
+  display: block;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.transparent {
+  background: transparent;
+}
+
+.component-color {
+  color: light-dark(var(--gray-950), var(--gray-300));
+}
+
+.component-height {
+  height: 2.5rem;
+}
+
+.hidden {
+  display: none;
+}
+
+.mar-l-specific {
+  margin-left: 31px;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.overflow-auto {
+  overflow: auto;
+}
+
+.response-panel-grid {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  grid-template-columns: 1fr;
+}
+
+.gap-25 {
+  gap: 0.25rem;
+}
+
+.appearance-none {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.dropdown-template {
+  padding-right: 2rem;
+  border: 1px solid var(--gray-400);
+  border-radius: var(--m-border-radius-2);
+  height: var(--input-height, 2.5rem);
+}
+
+.dropdown-template-div {
+  position: absolute;
+  top: 50%;
+  right: 0.4rem;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.nav-min-width {
+  min-width: 200px;
+}
+
+.nav-label {
+  position: absolute;
+  top: var(--m-space-2);
+  right: var(--m-space-3);
+  cursor: pointer;
+  padding: var(--space-1);
+  border-radius: var(--radius-2);
+  background: var(--color-surface-subtle);
+  border: 1px solid var(--color-border-default);
+}

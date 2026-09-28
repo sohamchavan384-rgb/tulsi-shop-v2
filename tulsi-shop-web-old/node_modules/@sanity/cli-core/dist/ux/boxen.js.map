@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../src/ux/boxen.ts"],"sourcesContent":["export {\n  default as boxen,\n  type Options as BoxenOptions,\n  type Boxes,\n  type CustomBorderStyle,\n  type Spacing,\n} from 'boxen'\n"],"names":["default","boxen"],"mappings":"AAAA,SACEA,WAAWC,KAAK,QAKX,QAAO"}

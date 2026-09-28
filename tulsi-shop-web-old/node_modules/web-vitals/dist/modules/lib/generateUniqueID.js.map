@@ -1,0 +1,1 @@
+{"version":3,"file":"generateUniqueID.js","sourceRoot":"","sources":["../../../src/lib/generateUniqueID.ts"],"names":[],"mappings":"AAAA;;;;;;;;;;;;;;GAcG;AAEH;;;;GAIG;AACH,MAAM,CAAC,MAAM,gBAAgB,GAAG,GAAG,EAAE;IACnC,OAAO,MAAM,IAAI,CAAC,GAAG,EAAE,IAAI,IAAI,CAAC,KAAK,CAAC,IAAI,CAAC,MAAM,EAAE,GAAG,CAAC,IAAI,GAAG,CAAC,CAAC,CAAC,GAAG,IAAI,EAAE,CAAC;AAC7E,CAAC,CAAC"}

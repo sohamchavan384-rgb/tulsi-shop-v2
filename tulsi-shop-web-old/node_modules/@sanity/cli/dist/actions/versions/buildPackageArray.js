@@ -1,0 +1,44 @@
+import { getLocalPackageVersion } from '@sanity/cli-core';
+import { valid } from 'semver';
+import { trimHashFromVersion } from '../../util/trimHashFromVersion.js';
+import { tryFindLatestVersion } from './tryFindLatestVersion.js';
+/**
+ * Check if a version is pinned.
+ *
+ * @internal
+ */ function isPinnedVersion(version) {
+    return !!valid(version);
+}
+/**
+ * Build an array of package versions.
+ *
+ * @internal
+ */ export function buildPackageArray(packages, workDir, cliVersion) {
+    const modules = [];
+    const latest = tryFindLatestVersion('@sanity/cli');
+    modules.push({
+        declared: `^${cliVersion}`,
+        installed: Promise.resolve(trimHashFromVersion(cliVersion)),
+        isGlobal: true,
+        isPinned: false,
+        latest: latest.then((version)=>version),
+        name: '@sanity/cli'
+    });
+    return [
+        ...modules,
+        ...Object.keys(packages).map((pkgName)=>{
+            const latest = tryFindLatestVersion(pkgName);
+            const localVersion = getLocalPackageVersion(pkgName, workDir);
+            return {
+                declared: packages[pkgName],
+                installed: localVersion.then((version)=>version ? trimHashFromVersion(version) : undefined),
+                isGlobal: false,
+                isPinned: isPinnedVersion(packages[pkgName]),
+                latest: latest.then((version)=>version),
+                name: pkgName
+            };
+        })
+    ];
+}
+
+//# sourceMappingURL=buildPackageArray.js.map

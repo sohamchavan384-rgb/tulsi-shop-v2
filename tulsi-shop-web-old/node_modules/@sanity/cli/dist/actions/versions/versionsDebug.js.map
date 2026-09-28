@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/actions/versions/versionsDebug.ts"],"sourcesContent":["import {subdebug} from '@sanity/cli-core'\n\nexport const versionsDebug = subdebug('versions')\n"],"names":["subdebug","versionsDebug"],"mappings":"AAAA,SAAQA,QAAQ,QAAO,mBAAkB;AAEzC,OAAO,MAAMC,gBAAgBD,SAAS,YAAW"}

@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../src/server/serverDebug.ts"],"sourcesContent":["import {debug as baseDebug} from '@sanity/cli-core'\n\nexport const serverDebug = baseDebug.extend('server')\n"],"names":["debug","baseDebug","serverDebug","extend"],"mappings":"AAAA,SAAQA,SAASC,SAAS,QAAO,mBAAkB;AAEnD,OAAO,MAAMC,cAAcD,UAAUE,MAAM,CAAC,UAAS"}

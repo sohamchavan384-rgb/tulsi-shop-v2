@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/actions/graphql/helpUrls.ts"],"sourcesContent":["export const SCHEMA_LIFT_ANONYMOUS_OBJECT_TYPE = 'schema-lift-anonymous-object-type'\n"],"names":["SCHEMA_LIFT_ANONYMOUS_OBJECT_TYPE"],"mappings":"AAAA,OAAO,MAAMA,oCAAoC,oCAAmC"}

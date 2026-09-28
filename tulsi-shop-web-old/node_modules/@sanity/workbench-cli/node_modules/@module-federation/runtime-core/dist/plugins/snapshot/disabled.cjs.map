@@ -1,0 +1,1 @@
+{"version":3,"file":"disabled.cjs","names":["PluginSystem"],"sources":["../../../src/plugins/snapshot/disabled.ts"],"sourcesContent":["import { PluginSystem } from '../../utils/hooks';\n\nexport class DisabledSnapshotHandler {\n  hooks = new PluginSystem({});\n}\n"],"mappings":";;;;AAEA,IAAa,0BAAb,MAAqC;;eAC3B,IAAIA,kCAAa,EAAE,CAAC"}
