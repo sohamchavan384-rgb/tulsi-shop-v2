@@ -117,6 +117,7 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
   const [revRating, setRevRating] = useState(5)
   const [revComment, setRevComment] = useState("")
   const [revImage, setRevImage] = useState<string | null>(null)
+  const [isUploading, setIsUploading] = useState(false)
 
   useEffect(() => {
     async function fetchData() {
@@ -211,6 +212,36 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
       reader.readAsDataURL(file)
     }
   }
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const file = e.target.files?.[0]
+  if (!file) return
+
+  try {
+    setIsUploading(true)
+    const fileName = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`
+    
+    const { data, error } = await supabase.storage
+      .from('review-images')
+      .upload(fileName, file, { cacheControl: '3600', upsert: false })
+
+    if (error) {
+      alert('Upload failed. Please ensure the "review-images" public bucket exists in Supabase Storage.')
+      setIsUploading(false)
+      return
+    }
+
+    const { data: publicUrlData } = supabase.storage
+      .from('review-images')
+      .getPublicUrl(fileName)
+
+    setRevImage(publicUrlData.publicUrl)
+  } catch (err) {
+    console.error(err)
+    alert('Error uploading image.')
+  } finally {
+    setIsUploading(false)
+  }
+}
 
   const handleAddReview = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -526,7 +557,27 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
             />
             <div style={{ marginBottom: '10px' }}>
               <label style={{ fontSize: '10px', color: theme.subtext, display: 'block', marginBottom: '4px', fontFamily: 'sans-serif' }}>Upload Received Product Image:</label>
-              <input type="file" accept="image/*" onChange={handleImageUpload} style={{ fontSize: '10px', color: theme.subtext }} />
+               <div style={{ marginBottom: '10px' }}>
+  <label style={{ fontSize: '10px', display: 'block', marginBottom: '4px' }}>
+    Upload Product Image (From Gallery):
+  </label>
+  <input type="file" accept="image/*" onChange={handleImageUpload} />
+  {isUploading && (
+    <p style={{ fontSize: '10px', color: '#C87D12', margin: '4px 0 0 0' }}>
+      Uploading image to cloud...
+    </p>
+  )}
+  {revImage && (
+    <div style={{ marginTop: '6px' }}>
+      <img 
+        src={revImage} 
+        alt="Preview" 
+        style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '4px' }} 
+      />
+    </div>
+  )}
+</div>
+ style={{ fontSize: '10px', color: theme.subtext }} />
               {revImage && (
                 <div style={{ marginTop: '6px' }}>
                   <img src={revImage} alt="Preview" style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '4px', border: `1px solid ${theme.accent}` }} />
