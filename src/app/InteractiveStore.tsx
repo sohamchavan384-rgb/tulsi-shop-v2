@@ -569,10 +569,21 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
 </div>
  style={{ fontSize: '10px', color: theme.subtext }} />
               {revImage && (
-                <div style={{ marginTop: '6px' }}>
-                  <img src={revImage} alt="Preview" style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '4px', border: `1px solid ${theme.accent}` }} />
-                </div>
-              )}
+          <p style={{ fontSize: '10px', color: theme.accent, margin: '4px 0 0 0' }}>
+            Uploading image to cloud...
+          </p>
+        )}
+      </div>
+      {revImage && (
+        <div style={{ marginTop: '6px' }}>
+          <img 
+            src={revImage} 
+            alt="Preview" 
+            style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '4px', border: `1px solid ${theme.accent}` }} 
+          />
+        </div>
+      )}
+
             </div>
             <button type="submit" style={{ backgroundColor: theme.accent, color: isDarkMode ? '#0A120C' : '#FFF', fontWeight: 'bold', fontSize: '10px', textTransform: 'uppercase', padding: '8px 14px', borderRadius: '4px', border: 'none', cursor: 'pointer' }}>
               Post Review
