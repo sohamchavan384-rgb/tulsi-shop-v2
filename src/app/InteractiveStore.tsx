@@ -202,16 +202,6 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
     setNewAnswer("")
   }
 
-  const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (file) {
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        setRevImage(reader.result as string)
-      }
-      reader.readAsDataURL(file)
-    }
-  }
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
   const file = e.target.files?.[0]
   if (!file) return
