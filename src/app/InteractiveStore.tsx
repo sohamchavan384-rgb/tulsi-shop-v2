@@ -203,35 +203,35 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
   }
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-  const file = e.target.files?.[0]
-  if (!file) return
+    const file = e.target.files?.[0]
+    if (!file) return
 
-  try {
-    setIsUploading(true)
-    const fileName = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`
-    
-    const { data, error } = await supabase.storage
-      .from('review-images')
-      .upload(fileName, file, { cacheControl: '3600', upsert: false })
+    try {
+      setIsUploading(true)
+      const fileName = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`
 
-    if (error) {
-      alert('Upload failed. Please ensure the "review-images" public bucket exists in Supabase Storage.')
+      const { error } = await supabase.storage
+        .from('review-images')
+        .upload(fileName, file, { cacheControl: '3600', upsert: false })
+
+      if (error) {
+        alert('Upload failed. Please ensure the "review-images" public bucket exists in Supabase Storage.')
+        setIsUploading(false)
+        return
+      }
+
+      const { data: publicUrlData } = supabase.storage
+        .from('review-images')
+        .getPublicUrl(fileName)
+
+      setRevImage(publicUrlData.publicUrl)
+    } catch (err) {
+      console.error(err)
+      alert('Error uploading image.')
+    } finally {
       setIsUploading(false)
-      return
     }
-
-    const { data: publicUrlData } = supabase.storage
-      .from('review-images')
-      .getPublicUrl(fileName)
-
-    setRevImage(publicUrlData.publicUrl)
-  } catch (err) {
-    console.error(err)
-    alert('Error uploading image.')
-  } finally {
-    setIsUploading(false)
   }
-}
 
   const handleAddReview = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -266,17 +266,17 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
 
   return (
     <div style={{ backgroundColor: theme.bg, color: theme.text, minHeight: '100vh', fontFamily: 'serif', margin: 0, padding: 0, position: 'relative' }}>
-      
+
       {/* Top Banner */}
       <div style={{ backgroundColor: theme.bannerBg, color: theme.bannerText, fontSize: '10px', padding: '6px 12px', textAlign: 'center', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '1px' }}>
         ✨ HAND-CARVED AT SACRED RADHA KUND • DIRECT WHATSAPP ORDERING ACROSS INDIA ✨
       </div>
 
       <div style={{ maxWidth: '600px', margin: '0 auto', padding: '16px' }}>
-        
+
         {/* Header with Theme Toggle Button */}
         <header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '16px', borderBottom: `1px solid ${theme.border}` }}>
-          <button 
+          <button
             onClick={() => setIsNavOpen(true)}
             aria-label="Open Navigation Menu"
             style={{ padding: '6px 10px', color: theme.heading, border: `1px solid ${theme.border}`, backgroundColor: theme.cardBg, borderRadius: '6px', fontWeight: 'bold', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
@@ -292,8 +292,7 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
           </div>
 
           <div style={{ display: 'flex', gap: '6px' }}>
-            {/* THEME TOGGLE BUTTON */}
-            <button 
+            <button
               onClick={toggleTheme}
               aria-label="Toggle Dark and Light Mode"
               style={{ padding: '6px 10px', color: theme.heading, border: `1px solid ${theme.border}`, backgroundColor: theme.cardBg, borderRadius: '6px', fontWeight: 'bold', cursor: 'pointer' }}
@@ -301,7 +300,7 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
               {isDarkMode ? '☀️' : '🌙'}
             </button>
 
-            <button 
+            <button
               onClick={() => setIsCartOpen(true)}
               aria-label="Open Shopping Cart Drawer"
               style={{ padding: '6px 10px', color: theme.heading, border: `1px solid ${theme.border}`, backgroundColor: theme.cardBg, borderRadius: '6px', fontWeight: 'bold', cursor: 'pointer', position: 'relative' }}
@@ -426,8 +425,8 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
           <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '16px' }}>
             {products.map((product) => (
               <div key={product.id} style={{ backgroundColor: theme.cardBg, border: `1px solid ${theme.border}`, borderRadius: '12px', padding: '12px', position: 'relative' }}>
-                
-                <button 
+
+                <button
                   onClick={toggleWishlist}
                   style={{ position: 'absolute', top: '20px', left: '20px', zIndex: 5, backgroundColor: 'rgba(0,0,0,0.3)', border: 'none', borderRadius: '50%', width: '28px', height: '28px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                 >
@@ -435,8 +434,8 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
                 </button>
 
                 <div style={{ width: '100%', height: '220px', backgroundColor: isDarkMode ? '#0B130E' : '#F7F4EC', borderRadius: '8px', marginBottom: '12px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <img 
-                    src={product.imageUrl || "/images/tulsi-mala.jpg"} 
+                  <img
+                    src={product.imageUrl || "/images/tulsi-mala.jpg"}
                     alt={product.name}
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     onError={(e) => {
@@ -473,7 +472,7 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '20px' }}>
             {qaList.map((item) => (
               <div key={item.id} style={{ backgroundColor: theme.cardBg, border: `1px solid ${theme.border}`, borderRadius: '6px', overflow: 'hidden' }}>
-                <button 
+                <button
                   onClick={() => setExpandedQa(expandedQa === item.id ? null : item.id)}
                   style={{ width: '100%', textAlign: 'left', padding: '12px', backgroundColor: 'transparent', border: 'none', fontWeight: 'bold', color: theme.heading, fontSize: '12px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
                 >
@@ -491,16 +490,16 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
 
           <form onSubmit={handleAddQA} style={{ backgroundColor: theme.cardBg, border: `1px solid ${theme.border}`, padding: '14px', borderRadius: '8px' }}>
             <h4 style={{ fontSize: '13px', fontWeight: 'bold', color: theme.heading, margin: '0 0 10px 0' }}>Ask a Question</h4>
-            <input 
-              type="text" 
-              placeholder="Your Question (e.g. How to care for Tulsi Mala?)" 
+            <input
+              type="text"
+              placeholder="Your Question (e.g. How to care for Tulsi Mala?)"
               value={newQuestion}
               onChange={(e) => setNewQuestion(e.target.value)}
               style={{ width: '100%', padding: '8px 10px', marginBottom: '8px', borderRadius: '4px', border: `1px solid ${theme.border}`, backgroundColor: theme.inputBg, color: theme.text, fontSize: '11px', boxSizing: 'border-box' }}
               required
             />
-            <textarea 
-              placeholder="Optional detail..." 
+            <textarea
+              placeholder="Optional detail..."
               value={newAnswer}
               onChange={(e) => setNewAnswer(e.target.value)}
               style={{ width: '100%', padding: '8px 10px', marginBottom: '8px', borderRadius: '4px', border: `1px solid ${theme.border}`, backgroundColor: theme.inputBg, color: theme.text, fontSize: '11px', boxSizing: 'border-box', height: '50px' }}
@@ -522,9 +521,9 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
 
           <form onSubmit={handleAddReview} style={{ backgroundColor: theme.cardBg, border: `1px solid ${theme.border}`, padding: '14px', borderRadius: '8px', marginBottom: '20px' }}>
             <h4 style={{ fontSize: '13px', fontWeight: 'bold', color: theme.heading, margin: '0 0 10px 0' }}>Leave a Devotee Review</h4>
-            <input 
-              type="text" 
-              placeholder="Your Name" 
+            <input
+              type="text"
+              placeholder="Your Name"
               value={revName}
               onChange={(e) => setRevName(e.target.value)}
               style={{ width: '100%', padding: '8px 10px', marginBottom: '8px', borderRadius: '4px', border: `1px solid ${theme.border}`, backgroundColor: theme.inputBg, color: theme.text, fontSize: '11px', boxSizing: 'border-box' }}
@@ -538,52 +537,32 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
                 <option value={3}>⭐⭐⭐ (3/5)</option>
               </select>
             </div>
-            <textarea 
-              placeholder="Write your review about the product..." 
+            <textarea
+              placeholder="Write your review about the product..."
               value={revComment}
               onChange={(e) => setRevComment(e.target.value)}
               style={{ width: '100%', padding: '8px 10px', marginBottom: '8px', borderRadius: '4px', border: `1px solid ${theme.border}`, backgroundColor: theme.inputBg, color: theme.text, fontSize: '11px', boxSizing: 'border-box', height: '60px' }}
               required
             />
             <div style={{ marginBottom: '10px' }}>
-              <label style={{ fontSize: '10px', color: theme.subtext, display: 'block', marginBottom: '4px', fontFamily: 'sans-serif' }}>Upload Received Product Image:</label>
-               <div style={{ marginBottom: '10px' }}>
-  <label style={{ fontSize: '10px', display: 'block', marginBottom: '4px' }}>
-    Upload Product Image (From Gallery):
-  </label>
-  <input type="file" accept="image/*" onChange={handleImageUpload} />
-  {isUploading && (
-    <p style={{ fontSize: '10px', color: '#C87D12', margin: '4px 0 0 0' }}>
-      Uploading image to cloud...
-    </p>
-  )}
-  {revImage && (
-    <div style={{ marginTop: '6px' }}>
-      <img 
-        src={revImage} 
-        alt="Preview" 
-        style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '4px' }} 
-      />
-    </div>
-  )}
-</div>
- style={{ fontSize: '10px', color: theme.subtext }} />
+              <label style={{ fontSize: '10px', color: theme.subtext, display: 'block', marginBottom: '4px', fontFamily: 'sans-serif' }}>
+                Upload Product Image (From Gallery):
+              </label>
+              <input type="file" accept="image/*" onChange={handleImageUpload} style={{ fontSize: '10px', color: theme.subtext }} />
+              {isUploading && (
+                <p style={{ fontSize: '10px', color: theme.accent, margin: '4px 0 0 0' }}>
+                  Uploading image to cloud...
+                </p>
+              )}
               {revImage && (
-          <p style={{ fontSize: '10px', color: theme.accent, margin: '4px 0 0 0' }}>
-            Uploading image to cloud...
-          </p>
-        )}
-      </div>
-      {revImage && (
-        <div style={{ marginTop: '6px' }}>
-          <img 
-            src={revImage} 
-            alt="Preview" 
-            style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '4px', border: `1px solid ${theme.accent}` }} 
-          />
-        </div>
-      )}
-
+                <div style={{ marginTop: '6px' }}>
+                  <img
+                    src={revImage}
+                    alt="Preview"
+                    style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '4px', border: `1px solid ${theme.accent}` }}
+                  />
+                </div>
+              )}
             </div>
             <button type="submit" style={{ backgroundColor: theme.accent, color: isDarkMode ? '#0A120C' : '#FFF', fontWeight: 'bold', fontSize: '10px', textTransform: 'uppercase', padding: '8px 14px', borderRadius: '4px', border: 'none', cursor: 'pointer' }}>
               Post Review
@@ -682,7 +661,7 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
                     <div key={item.id} style={{ backgroundColor: theme.cardBg, border: `1px solid ${theme.border}`, padding: '10px', borderRadius: '6px', fontSize: '11px' }}>
                       <div style={{ fontWeight: 'bold', color: theme.heading }}>{item.name}</div>
                       <div style={{ color: theme.accent, fontWeight: 'bold', margin: '2px 0 6px 0' }}>₹{item.price * item.quantity}</div>
-                      
+
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                           <button onClick={() => updateQuantity(item.id, -1)} style={{ padding: '2px 6px', fontWeight: 'bold', border: `1px solid ${theme.border}`, backgroundColor: theme.inputBg, color: theme.heading, borderRadius: '2px', cursor: 'pointer' }}>-</button>
@@ -704,7 +683,7 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
                   <span>Total:</span>
                   <span style={{ color: theme.accent }}>₹{cartTotal}</span>
                 </div>
-                <a 
+                <a
                   href={getWhatsAppCartLink()}
                   target="_blank"
                   rel="noopener noreferrer"
