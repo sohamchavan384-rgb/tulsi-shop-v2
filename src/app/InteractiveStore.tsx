@@ -67,7 +67,6 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
   const [cart, setCart] = useState<CartItem[]>([])
   const [wishlistCount, setWishlistCount] = useState(0)
 
-  // Load saved theme preference on page load
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme')
     if (savedTheme === 'dark') {
@@ -75,7 +74,6 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
     }
   }, [])
 
-  // Toggle theme handler
   const toggleTheme = () => {
     setIsDarkMode(prev => {
       const nextTheme = !prev
@@ -84,7 +82,6 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
     })
   }
 
-  // Dynamic Theme Colors
   const theme = {
     bg: isDarkMode ? '#0A120C' : '#FDFBF7',
     text: isDarkMode ? '#E8E3D5' : '#2C3E2E',
@@ -208,14 +205,16 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
 
     try {
       setIsUploading(true)
-      const fileName = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`
+      const cleanFileName = file.name.replace(/[^a-zA-Z0-9.]/g, '_')
+      const fileName = `${Date.now()}-${cleanFileName}`
 
       const { error } = await supabase.storage
         .from('review-images')
         .upload(fileName, file, { cacheControl: '3600', upsert: false })
 
       if (error) {
-        alert('Upload failed. Please ensure the "review-images" public bucket exists in Supabase Storage.')
+        console.error('Supabase upload error:', error)
+        alert(`Upload failed: ${error.message}`)
         setIsUploading(false)
         return
       }
@@ -225,9 +224,9 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
         .getPublicUrl(fileName)
 
       setRevImage(publicUrlData.publicUrl)
-    } catch (err) {
+    } catch (err: any) {
       console.error(err)
-      alert('Error uploading image.')
+      alert(`Error uploading image: ${err.message || err}`)
     } finally {
       setIsUploading(false)
     }
@@ -274,7 +273,7 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
 
       <div style={{ maxWidth: '600px', margin: '0 auto', padding: '16px' }}>
 
-        {/* Header with Theme Toggle Button */}
+        {/* Header with Custom Logo URL */}
         <header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '16px', borderBottom: `1px solid ${theme.border}` }}>
           <button
             onClick={() => setIsNavOpen(true)}
@@ -285,9 +284,14 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
             <span style={{ fontSize: '14px' }}>🌿</span>
           </button>
 
-          <div style={{ textAlign: 'center' }}>
-            <h1 style={{ fontSize: '18px', fontWeight: '900', color: theme.heading, margin: 0 }}>
-              Sacred Radha Kund Tulsi
+          <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
+            <img 
+              src="https://kommodo.ai/i/cSleAx30QfuIIyfOKdA3" 
+              alt="Radha Kund Tulsi Mala Logo" 
+              style={{ width: '54px', height: '54px', objectFit: 'contain', borderRadius: '50%' }}
+            />
+            <h1 style={{ fontSize: '16px', fontWeight: '900', color: theme.heading, margin: 0 }}>
+              Radha Kund Tulsi Mala
             </h1>
           </div>
 
