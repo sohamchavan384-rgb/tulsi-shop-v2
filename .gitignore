@@ -1,0 +1,5 @@
+# Next.js build artifacts
+.next/
+
+# Dependencies
+node_modules/
