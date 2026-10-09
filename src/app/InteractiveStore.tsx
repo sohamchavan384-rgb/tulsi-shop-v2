@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect, ChangeEvent } from 'react'
+import React, { useState, useEffect } from 'react'
 import { createClient } from '@supabase/supabase-js'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
@@ -202,16 +202,6 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
     setNewAnswer("")
   }
 
-  const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (file) {
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        setRevImage(reader.result as string)
-      }
-      reader.readAsDataURL(file)
-    }
-  }
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
   const file = e.target.files?.[0]
   if (!file) return
@@ -556,28 +546,15 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
               required
             />
             <div style={{ marginBottom: '10px' }}>
-              <label style={{ fontSize: '10px', color: theme.subtext, display: 'block', marginBottom: '4px', fontFamily: 'sans-serif' }}>Upload Received Product Image:</label>
-               <div style={{ marginBottom: '10px' }}>
-  <label style={{ fontSize: '10px', display: 'block', marginBottom: '4px' }}>
-    Upload Product Image (From Gallery):
-  </label>
-  <input type="file" accept="image/*" onChange={handleImageUpload} />
-  {isUploading && (
-    <p style={{ fontSize: '10px', color: '#C87D12', margin: '4px 0 0 0' }}>
-      Uploading image to cloud...
-    </p>
-  )}
-  {revImage && (
-    <div style={{ marginTop: '6px' }}>
-      <img 
-        src={revImage} 
-        alt="Preview" 
-        style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '4px' }} 
-      />
-    </div>
-  )}
-</div>
- style={{ fontSize: '10px', color: theme.subtext }} />
+              <label style={{ fontSize: '10px', color: theme.subtext, display: 'block', marginBottom: '4px', fontFamily: 'sans-serif' }}>
+                Upload Received Product Image (From Gallery):
+              </label>
+              <input type="file" accept="image/*" onChange={handleImageUpload} style={{ fontSize: '10px', color: theme.subtext }} />
+              {isUploading && (
+                <p style={{ fontSize: '10px', color: '#C87D12', margin: '4px 0 0 0' }}>
+                  Uploading image to cloud...
+                </p>
+              )}
               {revImage && (
                 <div style={{ marginTop: '6px' }}>
                   <img src={revImage} alt="Preview" style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '4px', border: `1px solid ${theme.accent}` }} />
