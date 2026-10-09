@@ -619,7 +619,7 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
           <div style={{ width: '280px', height: '100%', backgroundColor: theme.bg, color: theme.text, padding: '20px', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', borderRight: `1px solid ${theme.border}` }}>
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '14px', borderBottom: `1px solid ${theme.border}` }}>
-                <span style={{ fontWeight: 'bold', fontSize: '15px', color: theme.heading }}>🌿 Sacred Navigation</span>
+                <span style={{ fontWeight: 'bold', fontSize: '15px', color: theme.heading }}>Sacred Navigation</span>
                 <button onClick={() => setIsNavOpen(false)} style={{ background: 'none', border: 'none', color: theme.heading, fontSize: '18px', cursor: 'pointer' }}>✕</button>
               </div>
 
