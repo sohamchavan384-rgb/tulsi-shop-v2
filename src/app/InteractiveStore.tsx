@@ -292,7 +292,6 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
             style={{ padding: '6px 10px', color: theme.heading, border: `1px solid ${theme.border}`, backgroundColor: theme.cardBg, borderRadius: '6px', fontWeight: 'bold', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
           >
             <span style={{ fontSize: '16px' }}>☰</span>
-            <span style={{ fontSize: '14px' }}>🌿</span>
           </button>
 
           <div style={{ textAlign: 'center' }}>
@@ -619,7 +618,7 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
           <div style={{ width: '280px', height: '100%', backgroundColor: theme.bg, color: theme.text, padding: '20px', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', borderRight: `1px solid ${theme.border}` }}>
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '14px', borderBottom: `1px solid ${theme.border}` }}>
-                <span style={{ fontWeight: 'bold', fontSize: '15px', color: theme.heading }}>🌿 Sacred Navigation</span>
+                <span style={{ fontWeight: 'bold', fontSize: '15px', color: theme.heading }}>Sacred Navigation</span>
                 <button onClick={() => setIsNavOpen(false)} style={{ background: 'none', border: 'none', color: theme.heading, fontSize: '18px', cursor: 'pointer' }}>✕</button>
               </div>
 
