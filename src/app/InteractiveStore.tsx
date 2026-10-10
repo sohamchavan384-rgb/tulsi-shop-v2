@@ -19,6 +19,27 @@ interface CartItem extends Product {
   quantity: number
 }
 
+/** Professional shopping-cart SVG icon (replaces the cart emoji). */
+const CartIcon = ({ size = 18 }: { size?: number }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.8"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+    style={{ display: 'inline-block', verticalAlign: 'middle' }}
+  >
+    <circle cx="9" cy="21" r="1" />
+    <circle cx="20" cy="21" r="1" />
+    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+  </svg>
+)
+
 interface QAItem {
   id: number | string
   question: string
@@ -316,7 +337,7 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
               aria-label="Open Shopping Cart Drawer"
               style={{ padding: '6px 10px', color: theme.heading, border: `1px solid ${theme.border}`, backgroundColor: theme.cardBg, borderRadius: '6px', fontWeight: 'bold', cursor: 'pointer', position: 'relative' }}
             >
-              <span>🛍️</span>
+              <CartIcon size={18} />
               <span style={{ backgroundColor: theme.accent, color: isDarkMode ? '#0A120C' : '#FFF', borderRadius: '50%', padding: '2px 6px', fontSize: '10px', marginLeft: '4px', fontWeight: 'bold' }}>
                 {cartCount}
               </span>
@@ -631,7 +652,7 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
                   <span>✨</span> Material & Spiritual Benefits
                 </a>
                 <a href="#catalog" onClick={() => setIsNavOpen(false)} style={{ color: theme.heading, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <span>🛍️</span> Full Catalog
+                  <CartIcon size={16} /> Full Catalog
                 </a>
                 <div style={{ color: theme.heading, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><span>❤️</span> Saved Wishlist</span>
@@ -669,7 +690,7 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
           <div style={{ width: '300px', height: '100%', backgroundColor: theme.bg, padding: '20px', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', borderLeft: `1px solid ${theme.border}` }}>
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '12px', borderBottom: `1px solid ${theme.border}` }}>
-                <span style={{ fontWeight: 'bold', fontSize: '15px', color: theme.heading }}>🛍️ Your Cart</span>
+                <span style={{ fontWeight: 'bold', fontSize: '15px', color: theme.heading, display: 'inline-flex', alignItems: 'center', gap: '8px' }}><CartIcon size={16} /> Your Cart</span>
                 <button onClick={() => setIsCartOpen(false)} style={{ background: 'none', border: 'none', color: theme.heading, fontSize: '18px', cursor: 'pointer' }}>✕</button>
               </div>
 
