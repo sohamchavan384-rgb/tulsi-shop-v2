@@ -202,16 +202,6 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
     setNewAnswer("")
   }
 
-  const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (file) {
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        setRevImage(reader.result as string)
-      }
-      reader.readAsDataURL(file)
-    }
-  }
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
   const file = e.target.files?.[0]
   if (!file) return
@@ -292,7 +282,6 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
             style={{ padding: '6px 10px', color: theme.heading, border: `1px solid ${theme.border}`, backgroundColor: theme.cardBg, borderRadius: '6px', fontWeight: 'bold', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
           >
             <span style={{ fontSize: '16px' }}>☰</span>
-            <span style={{ fontSize: '14px' }}>🌿</span>
           </button>
 
           <div style={{ textAlign: 'center' }}>
@@ -316,7 +305,11 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
               aria-label="Open Shopping Cart Drawer"
               style={{ padding: '6px 10px', color: theme.heading, border: `1px solid ${theme.border}`, backgroundColor: theme.cardBg, borderRadius: '6px', fontWeight: 'bold', cursor: 'pointer', position: 'relative' }}
             >
-              <span>🛍️</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'inline-block', verticalAlign: 'middle' }}>
+                <circle cx="9" cy="21" r="1"></circle>
+                <circle cx="20" cy="21" r="1"></circle>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+              </svg>
               <span style={{ backgroundColor: theme.accent, color: isDarkMode ? '#0A120C' : '#FFF', borderRadius: '50%', padding: '2px 6px', fontSize: '10px', marginLeft: '4px', fontWeight: 'bold' }}>
                 {cartCount}
               </span>
@@ -557,27 +550,12 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
             />
             <div style={{ marginBottom: '10px' }}>
               <label style={{ fontSize: '10px', color: theme.subtext, display: 'block', marginBottom: '4px', fontFamily: 'sans-serif' }}>Upload Received Product Image:</label>
-               <div style={{ marginBottom: '10px' }}>
-  <label style={{ fontSize: '10px', display: 'block', marginBottom: '4px' }}>
-    Upload Product Image (From Gallery):
-  </label>
-  <input type="file" accept="image/*" onChange={handleImageUpload} />
-  {isUploading && (
-    <p style={{ fontSize: '10px', color: '#C87D12', margin: '4px 0 0 0' }}>
-      Uploading image to cloud...
-    </p>
-  )}
-  {revImage && (
-    <div style={{ marginTop: '6px' }}>
-      <img 
-        src={revImage} 
-        alt="Preview" 
-        style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '4px' }} 
-      />
-    </div>
-  )}
-</div>
- style={{ fontSize: '10px', color: theme.subtext }} />
+              <input type="file" accept="image/*" onChange={handleImageUpload} style={{ fontSize: '10px', color: theme.subtext }} />
+              {isUploading && (
+                <p style={{ fontSize: '10px', color: '#C87D12', margin: '4px 0 0 0' }}>
+                  Uploading image to cloud...
+                </p>
+              )}
               {revImage && (
                 <div style={{ marginTop: '6px' }}>
                   <img src={revImage} alt="Preview" style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '4px', border: `1px solid ${theme.accent}` }} />
@@ -669,7 +647,14 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
           <div style={{ width: '300px', height: '100%', backgroundColor: theme.bg, padding: '20px', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', borderLeft: `1px solid ${theme.border}` }}>
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '12px', borderBottom: `1px solid ${theme.border}` }}>
-                <span style={{ fontWeight: 'bold', fontSize: '15px', color: theme.heading }}>🛍️ Your Cart</span>
+                <span style={{ fontWeight: 'bold', fontSize: '15px', color: theme.heading, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                  </svg>
+                  Your Cart
+                </span>
                 <button onClick={() => setIsCartOpen(false)} style={{ background: 'none', border: 'none', color: theme.heading, fontSize: '18px', cursor: 'pointer' }}>✕</button>
               </div>
 
