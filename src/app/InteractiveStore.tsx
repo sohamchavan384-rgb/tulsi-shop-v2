@@ -220,18 +220,31 @@ export default function InteractiveStore({ initialProducts }: { initialProducts?
       return
     }
 
-    const { data: publicUrlData } = supabase.storage
-      .from('review-images')
-      .getPublicUrl(fileName)
+    try {
+      setIsUploading(true)
+      const fileName = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`
 
-    setRevImage(publicUrlData.publicUrl)
-  } catch (err) {
-    console.error(err)
-    alert('Error uploading image.')
-  } finally {
-    setIsUploading(false)
+      const { error } = await supabase.storage
+        .from('review-images')
+        .upload(fileName, file, { cacheControl: '3600', upsert: false })
+
+      if (error) {
+        alert('Upload failed. Please ensure the "review-images" public bucket exists in Supabase Storage.')
+        return
+      }
+
+      const { data: publicUrlData } = supabase.storage
+        .from('review-images')
+        .getPublicUrl(fileName)
+
+      setRevImage(publicUrlData.publicUrl)
+    } catch (err) {
+      console.error(err)
+      alert('Error uploading image.')
+    } finally {
+      setIsUploading(false)
+    }
   }
-}
 
   const handleAddReview = async (e: React.FormEvent) => {
     e.preventDefault()
